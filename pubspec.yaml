@@ -19,13 +19,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.4.0+9
-  firebase_auth: ^0.14.0+5
-  cloud_firestore: ^0.12.9+4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+
+  carousel_pro:
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +46,89 @@ flutter:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
+  assets:
+  - assets/category/electronics.png
+  - assets/category/homeappliances.png
+  - assets/category/jewellery.png
+  - assets/category/manfashion.png
+  - assets/category/shoes.png
+  - assets/category/sunglass.png
+  - assets/category/watch.png
+  - assets/category/womenfashion.png
+  - assets/slider/slider1.jpg
+  - assets/slider/slider2.jpg
+  - assets/slider/slider3.jpg
+  - assets/slider/slider4.jpg
+  - assets/slider/slider5.jpg
+  - assets/slider/slider6.jpg
+  - assets/products/camera1.jpg
+  - assets/products/camera2.jpg
+  - assets/products/camera3.jpg
+  - assets/products/glass1.jpg
+  - assets/products/glass2.jpg
+  - assets/products/glass3.jpg
+  - assets/products/glass4.jpg
+  - assets/products/glass5.jpg
+  - assets/products/glass6.jpg
+  - assets/products/glass7.jpg
+  - assets/products/glass8.jpg
+  - assets/products/homeappliance1.jpg
+  - assets/products/homeappliance2.jpg
+  - assets/products/homeappliance3.jpg
+  - assets/products/homeappliance4.jpg
+  - assets/products/homeappliance5.jpg
+  - assets/products/homeappliance6.jpg
+  - assets/products/homeappliance7.jpg
+  - assets/products/homeappliance8.jpg
+  - assets/products/jewellery1.jpg
+  - assets/products/jewellery2.jpg
+  - assets/products/jewellery3.jpg
+  - assets/products/jewellery4.jpg
+  - assets/products/jewellery5.jpg
+  - assets/products/jewellery6.jpg
+  - assets/products/jewellery7.jpg
+  - assets/products/jewellery8.jpg
+  - assets/products/man1.jpg
+  - assets/products/man2.jpg
+  - assets/products/man3.jpg
+  - assets/products/man4.jpg
+  - assets/products/man5.jpg
+  - assets/products/man6.jpg
+  - assets/products/man7.jpg
+  - assets/products/man8.jpg
+  - assets/products/mobile1.jpg
+  - assets/products/mobile2.jpg
+  - assets/products/mobile3.jpg
+  - assets/products/shoe1.jpg
+  - assets/products/shoe2.jpg
+  - assets/products/shoe3.jpg
+  - assets/products/shoe4.jpg
+  - assets/products/shoe5.jpg
+  - assets/products/shoe6.jpg
+  - assets/products/shoe7.jpg
+  - assets/products/shoe8.jpg
+  - assets/products/tab1.jpg
+  - assets/products/tab2.jpg
+  - assets/products/tab3.jpg
+  - assets/products/tv1.jpg
+  - assets/products/tv2.jpg
+  - assets/products/tv3.jpg
+  - assets/products/watch1.jpg
+  - assets/products/watch2.jpg
+  - assets/products/watch3.jpg
+  - assets/products/watch4.jpg
+  - assets/products/watch5.jpg
+  - assets/products/watch6.jpg
+  - assets/products/watch7.jpg
+  - assets/products/watch8.jpg
+  - assets/products/women1.jpg
+  - assets/products/women2.jpg
+  - assets/products/women3.jpg
+  - assets/products/women4.jpg
+  - assets/products/women5.jpg
+  - assets/products/women6.jpg
+  - assets/products/women7.jpg
+  - assets/products/women8.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
