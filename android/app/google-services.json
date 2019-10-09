@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "918743084449",
+    "firebase_url": "https://rialto-46e3b.firebaseio.com",
+    "project_id": "rialto-46e3b",
+    "storage_bucket": "rialto-46e3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918743084449:android:51a08de65d7f2b5a1a6fe0",
+        "android_client_info": {
+          "package_name": "com.rialtoapp.rialto.rialto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918743084449-ddveqr02ul0dv6p933a5j1pqj2rclrch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFwDmap2JAxITy4Y39aBJhNTDvp_MvTZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918743084449-ddveqr02ul0dv6p933a5j1pqj2rclrch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
