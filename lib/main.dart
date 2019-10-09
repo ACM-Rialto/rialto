@@ -12,7 +12,7 @@ class RialtoApp extends StatelessWidget {
       title: 'Rialto',
       theme: ThemeData(
         primarySwatch: Colors.orange,
-        primaryColor: Colors.orange,
+        primaryColor: Colors.redAccent,
         accentColor: Colors.white,
         primaryTextTheme: Typography(platform: TargetPlatform.android).black,
         textTheme: Typography(platform: TargetPlatform.android).black,
