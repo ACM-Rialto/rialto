@@ -37,7 +37,9 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildSignUpButton() {
-    return _buildButton("sign up", () {});
+    return _buildButton("sign up", () {
+      Navigator.of(context).pushNamed('/sign-up');
+    });
   }
 
   Widget _buildLoginButton() {
@@ -132,9 +134,10 @@ class LoginPageState extends State<LoginPage> {
               onSaved: (email) => _email = email,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(borderRadius),
-                    )),
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(borderRadius),
+                  ),
+                ),
                 hintText: 'Email',
                 filled: true,
                 fillColor: Theme

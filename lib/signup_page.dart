@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rialto/front_page.dart';
 import 'package:rialto/signup_authentication.dart';
 
-class signupPage extends StatefulWidget {
+class signupPage extends FrontPage {
   signupPage({@required this.auth, this.onSignedIn});
 
   final BaseAuth auth;
@@ -11,8 +12,6 @@ class signupPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _signupPageState();
 }
 
-enum FormMode { LOGIN, SIGNUP }
-
 class _signupPageState extends State<signupPage> {
   final _formKey = new GlobalKey<FormState>();
 
@@ -20,8 +19,6 @@ class _signupPageState extends State<signupPage> {
   String _password;
   String _errorMessage;
 
-  // Initial form is login form
-  FormMode _formMode = FormMode.LOGIN;
   bool _isIos;
   bool _isLoading;
 
@@ -44,24 +41,13 @@ class _signupPageState extends State<signupPage> {
     if (_validateAndSave()) {
       String userId = "";
       try {
-        if (_formMode == FormMode.LOGIN) {
-          userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
-        } else {
-          userId = await widget.auth.signUp(_email, _password);
-          widget.auth.sendEmailVerification();
-          _showVerifyEmailSentDialog();
-          print('Signed up user: $userId');
-        }
+        userId = await widget.auth.signUp(_email, _password);
+        widget.auth.sendEmailVerification();
+        _showVerifyEmailSentDialog();
+        print('Signed up user: $userId');
         setState(() {
           _isLoading = false;
         });
-
-        if (userId.length > 0 &&
-            userId != null &&
-            _formMode == FormMode.LOGIN) {
-          widget.onSignedIn();
-        }
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -82,36 +68,18 @@ class _signupPageState extends State<signupPage> {
     super.initState();
   }
 
-  void _changeFormToSignUp() {
-    _formKey.currentState.reset();
-    _errorMessage = "";
-    setState(() {
-      _formMode = FormMode.SIGNUP;
-    });
-  }
-
-  void _changeFormToLogin() {
-    _formKey.currentState.reset();
-    _errorMessage = "";
-    setState(() {
-      _formMode = FormMode.LOGIN;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Rialto'),
-          centerTitle: true,
-        ),
-        body: Stack(
-          children: <Widget>[
-            _showBody(),
-            _showCircularProgress(),
-          ],
-        ));
+    return Center(
+      child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _showBody(),
+              _showCircularProgress(),
+            ],
+          )),
+    );
   }
 
   Widget _showCircularProgress() {
@@ -137,7 +105,6 @@ class _signupPageState extends State<signupPage> {
             new FlatButton(
               child: new Text("Dismiss"),
               onPressed: () {
-                _changeFormToLogin();
                 Navigator.of(context).pop();
               },
             ),
@@ -148,22 +115,24 @@ class _signupPageState extends State<signupPage> {
   }
 
   Widget _showBody() {
-    return new Container(
-        padding: EdgeInsets.all(16.0),
-        child: new Form(
-          key: _formKey,
-          child: new ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              _showLogo(),
-              _showEmailInput(),
-              _showPasswordInput(),
-              _showPrimaryButton(),
-              _showSecondaryButton(),
-              _showErrorMessage(),
-            ],
+    return new Form(
+      key: _formKey,
+      child: new Column(
+        children: <Widget>[
+          _showEmailInput(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: _showPasswordInput(),
           ),
-        ));
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: _showPrimaryButton(),
+          ),
+          _showSecondaryButton(),
+          _showErrorMessage(),
+        ],
+      ),
+    );
   }
 
   Widget _showErrorMessage() {
@@ -183,33 +152,29 @@ class _signupPageState extends State<signupPage> {
     }
   }
 
-  Widget _showLogo() {
-    return new Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-        child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('assets/flutter-icon.png'),
-        ),
-      ),
-    );
-  }
-
   Widget _showEmailInput() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+    const double borderRadius = 10.0;
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.7,
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Email',
-            icon: new Icon(
-              Icons.mail,
-              color: Colors.grey,
-            )),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(borderRadius),
+            ),
+          ),
+          hintText: 'Email',
+          filled: true,
+          fillColor: Theme
+              .of(context)
+              .accentColor,
+        ),
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
         onSaved: (value) => _email = value.trim(),
       ),
@@ -217,18 +182,28 @@ class _signupPageState extends State<signupPage> {
   }
 
   Widget _showPasswordInput() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+    const double borderRadius = 10.0;
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.7,
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Password',
-            icon: new Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(borderRadius),
+            ),
+          ),
+          hintText: 'Password',
+          filled: true,
+          fillColor: Theme
+              .of(context)
+              .accentColor,
+        ),
         validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
         onSaved: (value) => _password = value.trim(),
       ),
@@ -237,35 +212,42 @@ class _signupPageState extends State<signupPage> {
 
   Widget _showSecondaryButton() {
     return new FlatButton(
-      child: _formMode == FormMode.LOGIN
-          ? new Text('Create an account',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
-          : new Text('Have an account? Sign in',
-          style:
-          new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-      onPressed: _formMode == FormMode.LOGIN
-          ? _changeFormToSignUp
-          : _changeFormToLogin,
+      child: new Text('Have an account? Sign in',
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      color: Colors.white.withOpacity(0.3),
+      onPressed: _goToLogin,
     );
   }
 
   Widget _showPrimaryButton() {
-    return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-        child: SizedBox(
-          height: 40.0,
-          child: new RaisedButton(
-            elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
-            child: _formMode == FormMode.LOGIN
-                ? new Text('Login',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white))
-                : new Text('Create account',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-            onPressed: _validateAndSubmit,
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.7,
+      height: 50,
+      child: RaisedButton(
+        child: Text(
+          "sign up",
+          style: TextStyle(
+            color: Theme
+                .of(context)
+                .accentColor,
+            fontSize: 16,
           ),
-        ));
+        ),
+        color: Theme
+            .of(context)
+            .primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        onPressed: _validateAndSubmit,
+      ),
+    );
+  }
+
+  void _goToLogin() {
+    Navigator.of(context).pushReplacementNamed('/');
   }
 }

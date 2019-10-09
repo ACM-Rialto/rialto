@@ -4,6 +4,8 @@ import 'package:rialto/cat/horizontallist.dart';
 import 'package:rialto/front_page.dart';
 import 'package:rialto/login_page.dart';
 import 'package:rialto/products/products.dart';
+import 'package:rialto/signup_authentication.dart';
+import 'package:rialto/signup_page.dart';
 
 void main() => runApp(RialtoApp());
 
@@ -23,6 +25,8 @@ class RialtoApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => FrontPageViewer(page: LoginPage()),
+        '/sign-up': (context) =>
+            FrontPageViewer(page: signupPage(auth: Auth(),)),
       },
     );
   }
