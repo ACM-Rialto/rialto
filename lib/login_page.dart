@@ -56,6 +56,7 @@ class LoginPageState extends State<LoginPage> {
             content: Text("Successfully logged in!"),
           ),
         );
+        Navigator.of(context).pushReplacementNamed('/home');
       } catch (e) {
         Scaffold.of(context).showSnackBar(
           SnackBar(

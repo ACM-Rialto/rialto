@@ -27,6 +27,7 @@ class RialtoApp extends StatelessWidget {
         '/': (context) => FrontPageViewer(page: LoginPage()),
         '/sign-up': (context) =>
             FrontPageViewer(page: signupPage(auth: Auth(),)),
+        '/home': (context) => MyHome(),
       },
     );
   }
