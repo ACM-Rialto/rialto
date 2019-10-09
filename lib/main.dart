@@ -1,9 +1,9 @@
-import 'package:ecommerce/cat/horizontallist.dart';
-import 'package:ecommerce/products/products.dart';
-import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/material.dart';
+import 'package:rialto/cat/horizontallist.dart';
 import 'package:rialto/front_page.dart';
 import 'package:rialto/login_page.dart';
+import 'package:rialto/products/products.dart';
 
 void main() => runApp(RialtoApp());
 
@@ -35,7 +35,7 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-  Widget imageCarousel= Container(
+  Widget imageCarousel = Container(
     height: 225.0,
     child: Carousel(
       overlayShadow: false,
@@ -56,8 +56,8 @@ class _MyHomeState extends State<MyHome> {
       animationDuration: Duration(microseconds: 1500),
     ),
   );
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -66,32 +66,59 @@ class _MyHomeState extends State<MyHome> {
           backgroundColor: Colors.redAccent,
           title: Text('Marketplace'),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.search,color:Colors.white,),
-            onPressed: null,
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: null,
             ),
-            IconButton(icon: Icon(Icons.shopping_basket,color:Colors.white),
-            onPressed: null,
+            IconButton(
+              icon: Icon(Icons.shopping_basket, color: Colors.white),
+              onPressed: null,
             ),
           ],
         ),
         body: ListView(
           children: <Widget>[
-            SizedBox(height: 5.0,),
+            SizedBox(
+              height: 5.0,
+            ),
             imageCarousel,
-            Padding(padding: const EdgeInsets.only(top: 8.0, left: 8.0,),
-            child: Text('Popular Categories', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                left: 8.0,
+              ),
+              child: Text(
+                'Popular Categories',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.black),
+              ),
             ),
-
             HorizontalList(),
-
-            Padding(padding: const EdgeInsets.only(top: 8.0, left: 8.0,),
-            child: Text('Popular Products', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                left: 8.0,
+              ),
+              child: Text(
+                'Popular Products',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.black),
+              ),
             ),
-
-            Padding(padding: const EdgeInsets.only(top: 15.0, left: 8.0,),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 15.0,
+                left: 8.0,
+              ),
             ),
             Container(
-
               height: 560.0,
               child: Products(),
             )

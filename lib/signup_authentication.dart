@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class BaseAuth {
@@ -19,18 +20,17 @@ class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<String> signIn(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user.uid;
+    return result.user.uid;
   }
 
   Future<String> signUp(String email, String password) async {
-    if(email.endsWith("utdallas.edu")) {
-      FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
+    if (email.endsWith("utdallas.edu")) {
+      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return user.uid;
-    }
-    else{
+      return result.user.uid;
+    } else {
       // Add the User message to tell university email are allowed.
     }
   }
@@ -53,5 +53,4 @@ class Auth implements BaseAuth {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
   }
-
 }
