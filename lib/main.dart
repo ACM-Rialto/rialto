@@ -2,6 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/cat/horizontallist.dart';
 import 'package:rialto/front_page.dart';
+import 'package:rialto/item_upload_form.dart';
 import 'package:rialto/login_page.dart';
 import 'package:rialto/products/products.dart';
 import 'package:rialto/signup_authentication.dart';
@@ -35,11 +36,12 @@ class RialtoApp extends StatelessWidget {
 
 class MyHome extends StatefulWidget {
   MyHome({Key key}) : super(key: key);
-
   _MyHomeState createState() => _MyHomeState();
 }
 
 class _MyHomeState extends State<MyHome> {
+  final _formKey = GlobalKey<FormState>();
+
   Widget imageCarousel = Container(
     height: 225.0,
     child: Carousel(
@@ -128,6 +130,16 @@ class _MyHomeState extends State<MyHome> {
               child: Products(),
             )
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SecondRoute()),
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.redAccent,
         ),
       ),
     );
