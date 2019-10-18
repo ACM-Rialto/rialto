@@ -48,6 +48,8 @@ class _ProductsState extends State<Products> {
     {"name": "Shoe", "image": "assets/products/shoe1.jpg", "price": "28"}
   ];
 
+
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -75,7 +77,15 @@ class SingleProduct extends StatelessWidget {
   final prodName;
   final prodImage;
   final prodPrice;
-
+  final snackBar = SnackBar(
+    content: Text('Notification Sent!!'),
+    action: SnackBarAction(
+      label: 'Undo',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
   SingleProduct({this.prodName, this.prodImage, this.prodPrice});
 
   @override
@@ -118,7 +128,26 @@ class SingleProduct extends StatelessWidget {
                             fontSize: 16.0),
                       ),
                     ),
+                    FlatButton(
+                      color: Colors.blue,
+                      onPressed: () {
+                        final snackBar = SnackBar(
+                          content: Text('Seller Notified !!'),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+
+                        // Find the Scaffold in the widget tree and use
+                        // it to show a SnackBar.
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }, child: Text("Interested"),
+                    )
                   ],
+
                 )
 //          child: GridTile(
 //            footer: Container(
@@ -140,6 +169,7 @@ class SingleProduct extends StatelessWidget {
           ),
         ),
       ),
+
     );
   }
 }

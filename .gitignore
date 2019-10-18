@@ -254,7 +254,6 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml
 # *.ipr
 
 # Sonarlint plugin
