@@ -11,7 +11,14 @@ class ItemUploadForm extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter"),
+        title: Text(
+          "Add Item",
+          style: TextStyle(
+            color: Theme
+                .of(context)
+                .accentColor,
+          ),
+        ),
       ),
       body: Center(
         child: _buildForm(context, databaseReference),
@@ -32,62 +39,76 @@ class ItemUploadForm extends StatelessWidget {
   Widget _buildForm(BuildContext context, databaseReference) {
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: TextFormField(
-                decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(10),
-                ),
-              ),
-              hintText: 'Item Name',
-              filled: true,
-              fillColor: Theme.of(context).accentColor,
-            )),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: 100,
-            child: TextFormField(
-                decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(10),
-                ),
-              ),
-              hintText: 'Item Description',
-              filled: true,
-              fillColor: Theme.of(context).accentColor,
-            )),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: 100,
-            child: TextField(
-              decoration: new InputDecoration(labelText: "Price"),
-              keyboardType: TextInputType.number,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.7,
+              child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10),
+                      ),
+                    ),
+                    hintText: 'Item Name',
+                    filled: true,
+                    fillColor: Theme
+                        .of(context)
+                        .accentColor,
+                  )),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: Text("Upload"),
-              onPressed: () {
-                createRecord(databaseReference);
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                }
-              },
+            SizedBox(
+              height: 10,
             ),
-          )
-        ],
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.7,
+              height: 100,
+              child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10),
+                      ),
+                    ),
+                    hintText: 'Item Description',
+                    filled: true,
+                    fillColor: Theme
+                        .of(context)
+                        .accentColor,
+                  )),
+            ),
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.2,
+              height: 100,
+              child: TextField(
+                decoration: new InputDecoration(labelText: "Price"),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                child: Text("Upload"),
+                onPressed: () {
+                  createRecord(databaseReference);
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
