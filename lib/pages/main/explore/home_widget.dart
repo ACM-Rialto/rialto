@@ -1,7 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
-import 'package:rialto/pages/main/explore/item_upload_form.dart';
+import 'package:rialto/pages/main/explore/item_upload_page.dart';
 import 'package:rialto/pages/main/explore/products.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ItemUploadForm()),
+              MaterialPageRoute(builder: (context) => ItemUploadPage()),
             );
           },
           child: Icon(Icons.add),
