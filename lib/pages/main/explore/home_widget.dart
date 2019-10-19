@@ -1,6 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
+import 'package:rialto/pages/main/explore/item_upload_form.dart';
 import 'package:rialto/pages/main/explore/products.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
@@ -38,6 +39,16 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ItemUploadForm()),
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.redAccent,
+        ),
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
           title: Text('Marketplace'),
