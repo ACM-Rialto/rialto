@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:rialto/main.dart';
+import 'package:rialto/pages/main/explore/filler_page.dart';
+import 'package:rialto/pages/main/explore/home_widget.dart';
 
-class Home extends StatefulWidget {
+class NavigationPageViewer extends StatefulWidget {
   State<StatefulWidget> createState() {
-    return _HomeState();
+    return _NavigationPageViewerState();
   }
 }
 
-class _HomeState extends State<Home> {
+class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    MyHome(),
-    Text('CART'),
-    Text('PROFILE'),
+  final List<NavigationPage> _children = [
+    HomePage(),
+    FillerNavigationPageText('CART'),
+    FillerNavigationPageText('PROFILE'),
   ];
 
   Widget build(BuildContext context) {
@@ -31,7 +32,9 @@ class _HomeState extends State<Home> {
             title: new Text('Cart'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.person), title: new Text('Profile'))
+            icon: new Icon(Icons.person),
+            title: new Text('Profile'),
+          )
         ],
       ),
     );
@@ -54,3 +57,5 @@ class _HomeState extends State<Home> {
     });
   }
 }
+
+abstract class NavigationPage implements Widget {}

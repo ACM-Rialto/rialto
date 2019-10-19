@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rialto/front_page.dart';
-import 'package:rialto/signup_authentication.dart';
+import 'package:rialto/pages/front/front_page.dart';
+import 'package:rialto/pages/front/signup_authentication.dart';
 
 class signupPage extends FrontPage {
   signupPage({@required this.auth, this.onSignedIn});

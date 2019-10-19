@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rialto/front_page.dart';
+import 'package:rialto/pages/front/front_page.dart';
 
 class LoginPage extends FrontPage {
   @override
