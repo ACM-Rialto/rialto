@@ -27,6 +27,8 @@ dependencies:
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.12.9+4
   carousel_pro: ^1.0.0
+  qr_flutter: ^3.0.1
+  barcode_scan: ^1.0.0
 
 dev_dependencies:
   flutter_test:
