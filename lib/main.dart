@@ -2,6 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/cat/horizontallist.dart';
 import 'package:rialto/front_page.dart';
+import 'package:rialto/home_widget.dart';
 import 'package:rialto/login_page.dart';
 import 'package:rialto/products/products.dart';
 import 'package:rialto/signup_authentication.dart';
@@ -27,7 +28,8 @@ class RialtoApp extends StatelessWidget {
         '/': (context) => FrontPageViewer(page: LoginPage()),
         '/sign-up': (context) =>
             FrontPageViewer(page: signupPage(auth: Auth(),)),
-        '/home': (context) => MyHome(),
+//        '/home': (context) => MyHome(),
+        '/home': (context) => Home(),
       },
     );
   }

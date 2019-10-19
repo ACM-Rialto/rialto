@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
-import 'placeholder_widget.dart';
-import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:rialto/main.dart';
 
-
-class Home extends StatefulWidget
-{
-  State<StatefulWidget> createState()
-  {
+class Home extends StatefulWidget {
+  State<StatefulWidget> createState() {
     return _HomeState();
   }
 }
 
-class _HomeState extends State<Home>
-{
+class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    PlaceholderWidget(Colors.greenAccent),
+    MyHome(),
     Text('CART'),
-    Text('PROFILE')
+    Text('PROFILE'),
   ];
-  Widget build(BuildContext context)
-  {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon:Icon(Icons.search),
-            onPressed: () {
-              print("Search pressed");
-            },
-          )
-        ],
-      ),
 
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
@@ -47,16 +31,13 @@ class _HomeState extends State<Home>
             title: new Text('Cart'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.person),
-              title: new Text('Profile')
-          )
+              icon: new Icon(Icons.person), title: new Text('Profile'))
         ],
       ),
     );
   }
 
-  Widget buildRow()
-  {
+  Widget buildRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -66,8 +47,8 @@ class _HomeState extends State<Home>
       ],
     );
   }
-  void onTabTapped(int index)
-  {
+
+  void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
