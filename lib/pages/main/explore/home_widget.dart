@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
         ),
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
-          title: Text('Marketplace'),
+          title: Text('Rialto'),
           actions: <Widget>[
             IconButton(
               icon: Icon(
