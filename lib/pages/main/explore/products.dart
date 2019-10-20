@@ -80,7 +80,6 @@ class SingleProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.only(left: 0.0, top: 10.0, bottom: 8.0),
       child: Card(

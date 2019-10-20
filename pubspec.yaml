@@ -25,12 +25,13 @@ dependencies:
   cupertino_icons: ^0.1.2
   firebase_core: ^0.4.0+9
   firebase_auth: ^0.14.0+5
+  firebase_storage: ^3.0.6
   cloud_firestore: ^0.12.9+4
   carousel_pro: ^1.0.0
   qr_flutter: ^3.0.1
   barcode_scan: ^1.0.0
   image_picker: ^0.6.1+8
-  permission_handler: '^3.3.0'
+  permission_handler: ^3.3.0
 
 dev_dependencies:
   flutter_test:
