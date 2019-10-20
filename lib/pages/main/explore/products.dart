@@ -118,7 +118,7 @@ class SingleProduct extends StatelessWidget {
                       ),
                     ),
                     FlatButton(
-                      color: Colors.blue,
+                      color: Colors.redAccent,
                       onPressed: () {
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
@@ -132,7 +132,12 @@ class SingleProduct extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Text("Interested"),
+                      child: Text(
+                        "Interested",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     )
                   ],
                 )
