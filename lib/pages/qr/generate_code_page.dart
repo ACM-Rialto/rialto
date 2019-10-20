@@ -7,8 +7,8 @@ class GenerateCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, String> test = new Map();
-    test['buyer'] = "arham.siddiqui@utdallas.edu";
-    test['seller'] = "dummy.user@utdallas.edu";
+    test['buyer'] = "a@utdallas.edu";
+    test['seller'] = "arham.siddiqui@utdallas.edu";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,

@@ -55,6 +55,15 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(
+                Icons.space_bar,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/qr');
+              },
+            ),
+            IconButton(
+              icon: Icon(
                 Icons.search,
                 color: Colors.white,
               ),

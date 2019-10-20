@@ -4,6 +4,8 @@ import 'package:rialto/pages/front/login_page.dart';
 import 'package:rialto/pages/front/signup_authentication.dart';
 import 'package:rialto/pages/front/signup_page.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
+import 'package:rialto/pages/qr/generate_code_page.dart';
+import 'package:rialto/pages/qr/master_qr_page.dart';
 
 void main() => runApp(RialtoApp());
 
@@ -26,6 +28,8 @@ class RialtoApp extends StatelessWidget {
         '/sign-up': (context) =>
             FrontPageViewer(page: signupPage(auth: Auth())),
         '/home': (context) => NavigationPageViewer(),
+        '/qr': (context) => MasterQRPage(),
+        '/qr/generate': (context) => GenerateCodePage(),
       },
     );
   }
