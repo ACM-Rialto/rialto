@@ -54,98 +54,130 @@ class ItemUploadPage extends StatelessWidget {
   Widget _buildForm(BuildContext context, Firestore databaseReference) {
     var pictureUploadWidget = _PictureUpload();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 7.5),
+      padding: const EdgeInsets.symmetric(vertical: 7.5),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              pictureUploadWidget,
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(10),
+          child: Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                pictureUploadWidget,
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Item Name',
+                      filled: true,
+                      fillColor: Theme
+                          .of(context)
+                          .accentColor,
+                    ),
+                    onSaved: (value) {
+                      _itemName = value;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Item Description',
+                      filled: true,
+                      fillColor: Theme
+                          .of(context)
+                          .accentColor,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    onSaved: (value) {
+                      _itemDescription = value;
+                    },
+                  ),
+                ),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.attach_money,
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
+                      ),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.2,
+                        child: TextFormField(
+                          decoration: new InputDecoration(labelText: "Price"),
+                          keyboardType: TextInputType.number,
+                          onSaved: (value) {
+                            _itemPrice = double.parse(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: RaisedButton(
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
+                    child: Text(
+                      "Upload",
+                      style: TextStyle(
+                        color: Theme
+                            .of(context)
+                            .accentColor,
                       ),
                     ),
-                    hintText: 'Item Name',
-                    filled: true,
-                    fillColor: Theme.of(context).accentColor,
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                      }
+                      await createRecord(
+                          databaseReference, pictureUploadWidget);
+                      Navigator.pop(context);
+                    },
                   ),
-                  onSaved: (value) {
-                    _itemName = value;
-                  },
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(10),
-                      ),
-                    ),
-                    hintText: 'Item Description',
-                    filled: true,
-                    fillColor: Theme.of(context).accentColor,
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 3,
-                  onSaved: (value) {
-                    _itemDescription = value;
-                  },
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.attach_money,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    child: TextFormField(
-                      decoration: new InputDecoration(labelText: "Price"),
-                      keyboardType: TextInputType.number,
-                      onSaved: (value) {
-                        _itemPrice = double.parse(value);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text(
-                    "Upload",
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                    }
-                    await createRecord(databaseReference, pictureUploadWidget);
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
