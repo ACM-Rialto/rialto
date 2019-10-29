@@ -33,12 +33,6 @@ class ItemUploadPage extends StatelessWidget {
       _PictureUpload pictures) async {
     DocumentReference document = databaseReference.collection("items")
         .document();
-    await document.setData({
-      'name': _itemName,
-      'description': _itemDescription,
-      'price': _itemPrice,
-      'seller': 'a@utdallas.edu',
-    });
     int pictureIndex = 0;
     pictures.imageFiles.forEach((file) async {
       StorageReference storageReference = FirebaseStorage.instance
@@ -48,6 +42,13 @@ class ItemUploadPage extends StatelessWidget {
       StorageUploadTask uploadTask = storageReference.putFile(file);
       await uploadTask.onComplete;
       pictureIndex++;
+      await document.setData({
+        'name': _itemName,
+        'description': _itemDescription,
+        'price': _itemPrice,
+        'seller': 'a@utdallas.edu',
+        'image': await storageReference.getDownloadURL()
+      });
     });
   }
 
@@ -172,7 +173,7 @@ class ItemUploadPage extends StatelessWidget {
                       }
                       await createRecord(
                           databaseReference, pictureUploadWidget);
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/home');
                     },
                   ),
                 ),
