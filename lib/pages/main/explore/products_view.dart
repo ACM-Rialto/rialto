@@ -19,7 +19,6 @@ class _ProductsViewState extends State<ProductsView> {
     CollectionReference itemsReference = widget.firestore.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {
-        print('adding product');
         widget.products.add(new Product(
           name: documentSnapshot.data['name'],
           price: documentSnapshot.data['price'],
@@ -27,10 +26,8 @@ class _ProductsViewState extends State<ProductsView> {
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
         ));
-        setState(() {
-          print("refreshed! ${widget.products.length}");
-        });
       });
+      setState(() {});
     });
   }
 
