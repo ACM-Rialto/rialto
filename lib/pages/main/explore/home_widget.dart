@@ -2,7 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
-import 'package:rialto/pages/main/explore/products.dart';
+import 'package:rialto/pages/main/explore/products_view.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
 class HomePage extends StatefulWidget implements NavigationPage {
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               height: 560.0,
-              child: Products(),
+              child: ProductsView(),
             )
           ],
         ),

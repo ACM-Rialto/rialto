@@ -1,57 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rialto/data/product.dart';
 
-class Products extends StatefulWidget {
-  Products({Key key}) : super(key: key);
+class ProductsView extends StatefulWidget {
+  final Firestore firestore = Firestore.instance;
+  List<Product> products = new List();
 
-  _ProductsState createState() => _ProductsState();
+  ProductsView({Key key}) : super(key: key);
+
+  _ProductsViewState createState() => _ProductsViewState();
 }
 
-class _ProductsState extends State<Products> {
-  var productList = [
-    {"name": "Camera", "image": "assets/products/camera1.jpg", "price": "10"},
-    {
-      "name": "Home",
-      "image": "assets/products/homeappliance1.jpg",
-      "price": "50"
-    },
-    {"name": "Sun Glass", "image": "assets/products/glass1.jpg", "price": "8"},
-    {
-      "name": "Men's Fashion",
-      "image": "assets/products/man1.jpg",
-      "price": "10"
-    },
-    {
-      "name": "Necklace",
-      "image": "assets/products/jewellery1.jpg",
-      "price": "16"
-    },
-    {"name": "Mobile", "image": "assets/products/mobile1.jpg", "price": "40"},
-    {"name": "Shoe", "image": "assets/products/shoe1.jpg", "price": "28"},
-    {"name": "Camera", "image": "assets/products/camera1.jpg", "price": "10"},
-    {
-      "name": "Home",
-      "image": "assets/products/homeappliance1.jpg",
-      "price": "50"
-    },
-    {"name": "Sun Glass", "image": "assets/products/glass1.jpg", "price": "8"},
-    {
-      "name": "Men's Fashion",
-      "image": "assets/products/man1.jpg",
-      "price": "10"
-    },
-    {
-      "name": "Necklace",
-      "image": "assets/products/jewellery1.jpg",
-      "price": "16"
-    },
-    {"name": "Mobile", "image": "assets/products/mobile1.jpg", "price": "40"},
-    {"name": "Shoe", "image": "assets/products/shoe1.jpg", "price": "28"}
-  ];
+class _ProductsViewState extends State<ProductsView> {
+
+  @override
+  void initState() {
+    super.initState();
+    CollectionReference itemsReference = widget.firestore.collection('items');
+    itemsReference.snapshots().forEach((snapshot) {
+      snapshot.documents.forEach((documentSnapshot) {
+        print('adding product');
+        widget.products.add(new Product(
+          name: documentSnapshot.data['name'],
+          price: documentSnapshot.data['price'],
+          description: documentSnapshot.data['description'],
+          image: documentSnapshot.data['image'],
+          sellerEmail: documentSnapshot.data['seller'],
+        ));
+        setState(() {
+          print("refreshed! ${widget.products.length}");
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: productList.length,
+      itemCount: widget.products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: MediaQuery.of(context).size.width /
@@ -61,22 +47,16 @@ class _ProductsState extends State<Products> {
                 .height / 1),
       ),
       itemBuilder: (BuildContext context, int index) {
-        return SingleProduct(
-          prodName: productList[index]['name'],
-          prodPrice: productList[index]['price'],
-          prodImage: productList[index]['image'],
-        );
+        return _SingleProductView(widget.products[index]);
       },
     );
   }
 }
 
-class SingleProduct extends StatelessWidget {
-  final prodName;
-  final prodImage;
-  final prodPrice;
+class _SingleProductView extends StatelessWidget {
+  final Product _product;
 
-  SingleProduct({this.prodName, this.prodImage, this.prodPrice});
+  _SingleProductView(this._product);
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +66,7 @@ class SingleProduct extends StatelessWidget {
         elevation: 6.0,
         color: Colors.cyanAccent,
         child: Hero(
-          tag: prodName,
+          tag: _product.name,
           child: Material(
             child: InkWell(
                 onTap: () {},
@@ -100,17 +80,18 @@ class SingleProduct extends StatelessWidget {
                         fit: BoxFit.contain, // otherwise the logo will be tiny
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(prodImage, fit: BoxFit.cover),
+                          child:
+                          Image.network(_product.image, fit: BoxFit.cover),
                         ),
                       ),
                     ),
                     ListTile(
                       leading: Text(
-                        prodName,
+                        _product.name,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       title: Text(
-                        "\$$prodPrice",
+                        "\$${_product.price}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
