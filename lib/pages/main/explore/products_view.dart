@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/pages/main/item/interested_users_view.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
@@ -12,7 +13,6 @@ class ProductsView extends StatefulWidget {
 }
 
 class _ProductsViewState extends State<ProductsView> {
-
   @override
   void initState() {
     super.initState();
@@ -22,6 +22,7 @@ class _ProductsViewState extends State<ProductsView> {
         widget.products.add(new Product(
           name: documentSnapshot.data['name'],
           price: documentSnapshot.data['price'],
+          documentId: documentSnapshot.reference.documentID,
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
@@ -97,18 +98,30 @@ class _SingleProductView extends StatelessWidget {
                     ),
                     FlatButton(
                       color: Colors.redAccent,
-                      onPressed: () {
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Seller Notified !!'),
-                            action: SnackBarAction(
-                              label: 'Undo',
-                              onPressed: () {
-                                // Some code to undo the change.
-                              },
+                      onPressed: () async {
+                        if (_product.sellerEmail == "a@utdallas.edu") {
+                          DocumentSnapshot snapshot = await Firestore.instance
+                              .collection('items')
+                              .document(_product.documentId)
+                              .get();
+                          // todo simplify this with helper class for firestore
+                          Map namesForEmail =
+                          snapshot.data['namesForEmail'];
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  content: InterestedUsersView(namesForEmail),
+                                );
+                              });
+                        } else {
+                          Scaffold.of(context).showSnackBar(
+                            new SnackBar(
+                              content: Text("We have notified the seller"),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                       child: Text(
                         "Interested",
