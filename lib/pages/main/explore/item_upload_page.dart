@@ -5,8 +5,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ItemUploadPage extends StatelessWidget {
+class ItemUploadPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new ItemUploadPageState();
+  }
+}
+
+class ItemUploadPageState extends State<ItemUploadPage> {
   static final _formKey = GlobalKey<FormState>();
+  final List<File> _imageFiles = new List();
 
   String _itemName;
   String _itemDescription;
@@ -21,7 +29,9 @@ class ItemUploadPage extends StatelessWidget {
         title: Text(
           "Add Item",
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme
+                .of(context)
+                .accentColor,
           ),
         ),
       ),
@@ -29,15 +39,12 @@ class ItemUploadPage extends StatelessWidget {
     );
   }
 
-  Future<void> createRecord(Firestore databaseReference,
-      _PictureUpload pictures) async {
-    DocumentReference document = databaseReference.collection("items")
-        .document();
+  Future<void> createRecord(Firestore databaseReference) async {
+    DocumentReference document =
+    databaseReference.collection("items").document();
     int pictureIndex = 0;
-    pictures.imageFiles.forEach((file) async {
-      StorageReference storageReference = FirebaseStorage.instance
-          .ref()
-          .child(
+    _imageFiles.forEach((file) async {
+      StorageReference storageReference = FirebaseStorage.instance.ref().child(
           'images/${document.documentID}/${file.toString()}-$pictureIndex}');
       StorageUploadTask uploadTask = storageReference.putFile(file);
       await uploadTask.onComplete;
@@ -55,7 +62,6 @@ class ItemUploadPage extends StatelessWidget {
   }
 
   Widget _buildForm(BuildContext context, Firestore databaseReference) {
-    var pictureUploadWidget = _PictureUpload();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7.5),
       child: Form(
@@ -69,7 +75,7 @@ class ItemUploadPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                pictureUploadWidget,
+                _buildPictureUpload(),
                 SizedBox(
                   height: 10,
                 ),
@@ -173,8 +179,7 @@ class ItemUploadPage extends StatelessWidget {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                       }
-                      await createRecord(
-                          databaseReference, pictureUploadWidget);
+                      await createRecord(databaseReference);
                       Navigator.pushReplacementNamed(context, '/home');
                     },
                   ),
@@ -186,35 +191,18 @@ class ItemUploadPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class _PictureUpload extends StatefulWidget {
-  final List<File> imageFiles = new List();
-
-  @override
-  State<StatefulWidget> createState() {
-    return _PictureUploadState();
-  }
-}
-
-class _PictureUploadState extends State<_PictureUpload> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Future getImageFromGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      widget.imageFiles.add(image);
+      _imageFiles.add(image);
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPictureUpload() {
     return GestureDetector(
       onTap: () async {
-        if (widget.imageFiles.length == 0) {
+        if (_imageFiles.length == 0) {
           getImageFromGallery();
         }
       },
@@ -223,24 +211,26 @@ class _PictureUploadState extends State<_PictureUpload> {
         height: MediaQuery.of(context).size.height * 0.3,
         decoration: BoxDecoration(
           border: Border.all(),
-          color: widget.imageFiles.length == 0
+          color: _imageFiles.length == 0
               ? Theme.of(context).primaryColor
               : Colors.white,
         ),
-        child: widget.imageFiles.length == 0
+        child: _imageFiles.length == 0
             ? Center(
           child: Icon(
             Icons.add,
-            color: Theme.of(context).accentColor,
+            color: Theme
+                .of(context)
+                .accentColor,
             size: 72,
           ),
         )
             : ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: widget.imageFiles.length + 1,
+            itemCount: _imageFiles.length + 1,
             itemBuilder: (BuildContext context, int index) {
               var child;
-              if (index == widget.imageFiles.length) {
+              if (index == _imageFiles.length) {
                 child = GestureDetector(
                   onTap: getImageFromGallery,
                   child: Center(
@@ -249,12 +239,22 @@ class _PictureUploadState extends State<_PictureUpload> {
                         Radius.circular(15),
                       ),
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        color: Theme.of(context).primaryColor,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.2,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.2,
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
                         child: Icon(
                           Icons.add,
-                          color: Theme.of(context).accentColor,
+                          color: Theme
+                              .of(context)
+                              .accentColor,
                           size: 72,
                         ),
                       ),
@@ -263,9 +263,12 @@ class _PictureUploadState extends State<_PictureUpload> {
                 );
               } else {
                 child = Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.3,
                   child: Center(
-                    child: Image.file(widget.imageFiles[index]),
+                    child: Image.file(_imageFiles[index]),
                   ),
                 );
               }
