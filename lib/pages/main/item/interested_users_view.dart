@@ -58,10 +58,17 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
         return _createNameRow(namesForEmail, names, emails, index, snapshot);
       },
       itemCount: names.length + 1,
-      separatorBuilder: (context, index) =>
-          Divider(
+        separatorBuilder: (context, index) {
+          if (index == 0) {
+            return Divider(
             color: Colors.black,
-      ),
+              thickness: 3,
+            );
+          }
+          return Divider(
+            color: Colors.black,
+          );
+        }
     );
   }
 
