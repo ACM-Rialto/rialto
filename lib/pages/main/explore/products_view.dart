@@ -111,7 +111,7 @@ class _SingleProductView extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   backgroundColor: Colors.white,
-                                  content: InterestedUsersView(namesForEmail),
+                                  content: InterestedUsersView(snapshot),
                                 );
                               });
                         } else {
