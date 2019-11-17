@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
+import 'package:rialto/utils/text_utilities.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
@@ -21,7 +22,7 @@ class _ProductsViewState extends State<ProductsView> {
       snapshot.documents.forEach((documentSnapshot) {
         widget.products.add(new Product(
           name: documentSnapshot.data['name'],
-          price: documentSnapshot.data['price'],
+          price: double.parse("${documentSnapshot.data['price']}"),
           documentId: documentSnapshot.reference.documentID,
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
@@ -83,18 +84,17 @@ class _SingleProductView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ListTile(
-                      leading: Text(
-                        _product.name,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      getTextWithCap(_product.name, 15),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
                       ),
-                      title: Text(
-                        "\$${_product.price}",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0),
-                      ),
+                    ),
+                    Text(
+                      "\$${_product.price}",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     FlatButton(
                       color: Colors.redAccent,
