@@ -49,6 +49,7 @@ class ItemUploadPage extends StatelessWidget {
         'seller': 'a@utdallas.edu',
         'image': await storageReference.getDownloadURL(),
         'interested_users': [],
+        'names_for_email': new Map(),
       });
     });
   }

@@ -5,7 +5,7 @@ import 'package:rialto/pages/main/item/interested_users_view.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
-  List<Product> products = new List();
+  final List<Product> products = new List();
 
   ProductsView({Key key}) : super(key: key);
 
@@ -99,14 +99,13 @@ class _SingleProductView extends StatelessWidget {
                     FlatButton(
                       color: Colors.redAccent,
                       onPressed: () async {
+                        DocumentSnapshot snapshot = await Firestore.instance
+                            .collection('items')
+                            .document(_product.documentId)
+                            .get();
+                        // todo simplify this with helper class for firestore
+                        Map namesForEmail = snapshot.data['names_for_email'];
                         if (_product.sellerEmail == "a@utdallas.edu") {
-                          DocumentSnapshot snapshot = await Firestore.instance
-                              .collection('items')
-                              .document(_product.documentId)
-                              .get();
-                          // todo simplify this with helper class for firestore
-                          Map namesForEmail =
-                          snapshot.data['namesForEmail'];
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -116,9 +115,14 @@ class _SingleProductView extends StatelessWidget {
                                 );
                               });
                         } else {
+                          namesForEmail['a@utdallas.edu'] = 'Arham Siddiqui';
+                          snapshot.reference.updateData({
+                            'names_for_email': namesForEmail,
+                          });
                           Scaffold.of(context).showSnackBar(
                             new SnackBar(
-                              content: Text("We have notified the seller"),
+                              content: new Text(
+                                  "You have marked this item as interested!"),
                             ),
                           );
                         }
