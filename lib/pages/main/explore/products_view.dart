@@ -128,7 +128,9 @@ class _SingleProductView extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        "Interested",
+                        _product.sellerEmail == 'a@utdallas.edu'
+                            ? "View Interested"
+                            : "Interested",
                         style: TextStyle(
                           color: Colors.white,
                         ),

@@ -23,39 +23,44 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: widget.productDocument.reference.snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      stream: widget.productDocument.reference.snapshots(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        Widget child = new Container();
+        if (snapshot.data != null) {
           Map namesForEmail = snapshot.data.data['names_for_email'];
           List names = namesForEmail.values.toList();
           List emails = namesForEmail.keys.toList();
-          return _createNamesList(namesForEmail, names, emails, snapshot);
-        });
+          child = _createNamesList(namesForEmail, names, emails, snapshot);
+        }
+        return Container(
+          height: 500,
+          width: 500,
+          child: child,
+        );
+      },
+    );
   }
 
   Widget _createNamesList(Map namesForEmail, List names, List emails,
       AsyncSnapshot<DocumentSnapshot> snapshot) {
-    return Container(
-      height: 500,
-      width: 500,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          if (index >= names.length + 1) {
-            return null;
-          } else if (index == 0) {
-            return Text(
-              "Interest Users",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            );
-          }
-          index -= 1;
-          return _createNameRow(namesForEmail, names, emails, index, snapshot);
-        },
-        itemCount: names.length + 1,
-        separatorBuilder: (context, index) =>
-            Divider(
-              color: Colors.black,
-            ),
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        if (index >= names.length + 1) {
+          return null;
+        } else if (index == 0) {
+          return Text(
+            "Interest Users",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          );
+        }
+        index -= 1;
+        return _createNameRow(namesForEmail, names, emails, index, snapshot);
+      },
+      itemCount: names.length + 1,
+      separatorBuilder: (context, index) =>
+          Divider(
+            color: Colors.black,
       ),
     );
   }
