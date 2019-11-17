@@ -1,4 +1,3 @@
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
@@ -12,27 +11,6 @@ class HomePage extends StatefulWidget implements NavigationPage {
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget imageCarousel = Container(
-    height: 225.0,
-    child: Carousel(
-      overlayShadow: false,
-      borderRadius: true,
-      boxFit: BoxFit.cover,
-      autoplay: true,
-      dotSize: 5.0,
-      indicatorBgPadding: 9.0,
-      images: [
-        new AssetImage('assets/slider/slider1.jpg'),
-        new AssetImage('assets/slider/slider2.jpg'),
-        new AssetImage('assets/slider/slider3.jpg'),
-        new AssetImage('assets/slider/slider4.jpg'),
-        new AssetImage('assets/slider/slider5.jpg'),
-        new AssetImage('assets/slider/slider6.jpg'),
-      ],
-      animationCurve: Curves.fastOutSlowIn,
-      animationDuration: Duration(microseconds: 1500),
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +49,6 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 5.0,
             ),
-            imageCarousel,
             Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
