@@ -29,70 +29,93 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
           Map namesForEmail = snapshot.data.data['names_for_email'];
           List names = namesForEmail.values.toList();
           List emails = namesForEmail.keys.toList();
-          return Container(
-            height: 500,
-            width: 500,
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                if (index >= names.length + 1) {
-                  return null;
-                } else if (index == 0) {
-                  return Text(
-                    "Interest Users",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  );
-                }
-                index -= 1;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(names[index]),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.check),
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content: new GeneratedCodeView(
-                                    seller: 'a@utdallas.edu',
-                                    buyer: 'arham@utdallas.edu',
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
-                          onPressed: () {
-                            namesForEmail.remove(emails[index]);
-                            snapshot.data.reference.updateData({
-                              'names_for_email': namesForEmail,
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-              itemCount: names.length + 1,
-              separatorBuilder: (context, index) =>
-                  Divider(
-                    color: Colors.black,
-                  ),
-            ),
-          );
+          return _createNamesList(namesForEmail, names, emails, snapshot);
         });
+  }
+
+  Widget _createNamesList(Map namesForEmail, List names, List emails,
+      AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return Container(
+      height: 500,
+      width: 500,
+      child: ListView.separated(
+        itemBuilder: (context, index) {
+          if (index >= names.length + 1) {
+            return null;
+          } else if (index == 0) {
+            return Text(
+              "Interest Users",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            );
+          }
+          index -= 1;
+          return _createNameRow(namesForEmail, names, emails, index, snapshot);
+        },
+        itemCount: names.length + 1,
+        separatorBuilder: (context, index) =>
+            Divider(
+              color: Colors.black,
+            ),
+      ),
+    );
+  }
+
+  Widget _createNameRow(Map namesForEmail, List names, List emails, int index,
+      AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(names[index]),
+        Row(
+          children: <Widget>[
+            _createApproveButton(emails, index),
+            _createDismissalButton(namesForEmail, emails, index, snapshot),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _createApproveButton(List emails, int index) {
+    return IconButton(
+      icon: Icon(Icons.check),
+      color: Theme
+          .of(context)
+          .primaryColor,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return _createQRDialog(emails, index);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _createQRDialog(List emails, int index) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: new GeneratedCodeView(
+        seller: 'a@utdallas.edu',
+        buyer: emails[index],
+      ),
+    );
+  }
+
+  Widget _createDismissalButton(Map namesForEmail, List emails, int index,
+      AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return IconButton(
+      icon: Icon(Icons.remove),
+      color: Theme
+          .of(context)
+          .primaryColor,
+      onPressed: () {
+        namesForEmail.remove(emails[index]);
+        snapshot.data.reference.updateData({
+          'names_for_email': namesForEmail,
+        });
+      },
+    );
   }
 }
