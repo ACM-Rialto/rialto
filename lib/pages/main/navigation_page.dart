@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rialto/pages/cart/cart.dart';
+import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/main/explore/filler_page.dart';
 import 'package:rialto/pages/main/explore/home_widget.dart';
 
@@ -12,7 +14,9 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
   final List<NavigationPage> _children = [
     HomePage(),
-    FillerNavigationPageText('CART'),
+    // ContactPage(),
+    CartPage(),
+    // FillerNavigationPageText('CART'),
     FillerNavigationPageText('PROFILE'),
   ];
 
