@@ -44,6 +44,10 @@ class LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginButton() {
     return _buildButton("login", () async {
+      var size = MediaQuery
+          .of(context)
+          .size;
+      widget.showLoadingDialog(context, width: size.width, height: size.height);
       _formKey.currentState.save();
       try {
         AuthResult auth =
@@ -56,6 +60,7 @@ class LoginPageState extends State<LoginPage> {
             content: Text("Successfully logged in!"),
           ),
         );
+        Navigator.pop(context); // dismiss the loading dialog
         Navigator.of(context).pushReplacementNamed('/home');
       } catch (e) {
         Scaffold.of(context).showSnackBar(

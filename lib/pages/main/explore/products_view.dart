@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
 import 'package:rialto/utils/text_utilities.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
@@ -79,8 +80,24 @@ class _SingleProductView extends StatelessWidget {
                         fit: BoxFit.contain, // otherwise the logo will be tiny
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child:
-                          Image.network(_product.image, fit: BoxFit.cover),
+                          child: Stack(
+                            children: <Widget>[
+                              Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation(
+                                    Colors.redAccent,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: _product.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
