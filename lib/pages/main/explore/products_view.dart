@@ -54,6 +54,7 @@ class ProductsViewState extends State<ProductsView> {
           sellerEmail: documentSnapshot.data['seller'],
         ));
       });
+      _products.shuffle();
       setState(() {});
     });
   }
