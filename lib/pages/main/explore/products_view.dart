@@ -7,7 +7,6 @@ import 'package:transparent_image/transparent_image.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
-  final List<Product> products = new List();
 
   ProductsView({Key key}) : super(key: key);
 
@@ -15,13 +14,17 @@ class ProductsView extends StatefulWidget {
 }
 
 class _ProductsViewState extends State<ProductsView> {
+  final List<Product> _products = new List();
+  Key _scrollKey = new PageStorageKey('scroll-preservation');
+
   @override
   void initState() {
     super.initState();
+    print('init');
     CollectionReference itemsReference = widget.firestore.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {
-        widget.products.add(new Product(
+        _products.add(new Product(
           name: documentSnapshot.data['name'],
           price: double.parse("${documentSnapshot.data['price']}"),
           documentId: documentSnapshot.reference.documentID,
@@ -37,7 +40,8 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: widget.products.length,
+      key: _scrollKey,
+      itemCount: _products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: MediaQuery.of(context).size.width /
@@ -47,7 +51,7 @@ class _ProductsViewState extends State<ProductsView> {
                 .height / 1),
       ),
       itemBuilder: (BuildContext context, int index) {
-        return _SingleProductView(widget.products[index]);
+        return _SingleProductView(_products[index]);
       },
     );
   }

@@ -4,13 +4,13 @@ import 'package:rialto/pages/main/explore/item_upload_page.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
-class HomePage extends StatefulWidget implements NavigationPage {
-  HomePage({Key key}) : super(key: key);
+class ExplorePage extends StatefulWidget implements NavigationPage {
+  ExplorePage({Key key}) : super(key: key);
 
-  _HomePageState createState() => _HomePageState();
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ExplorePageState extends State<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {

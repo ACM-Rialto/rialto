@@ -11,7 +11,7 @@ class NavigationPageViewer extends StatefulWidget {
 class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
   final List<NavigationPage> _children = [
-    HomePage(),
+    ExplorePage(),
     FillerNavigationPageText('CART'),
     FillerNavigationPageText('PROFILE'),
   ];
