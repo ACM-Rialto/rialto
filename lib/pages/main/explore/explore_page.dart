@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
@@ -11,40 +13,74 @@ class ExplorePage extends StatefulWidget implements NavigationPage {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
+  final refreshNotifier = new StreamController.broadcast();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ItemUploadPage()),
-            );
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.redAccent,
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ItemUploadPage()),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          color: Theme
+              .of(context)
+              .accentColor,
         ),
-        appBar: AppBar(
-          backgroundColor: Colors.redAccent,
-          title: Text('Rialto'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: null,
-            ),
-            IconButton(
-              icon: Icon(Icons.shopping_basket, color: Colors.white),
-              onPressed: null,
-            ),
-          ],
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+      ),
+      appBar: AppBar(
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        title: Text(
+          'Rialto',
+          style: TextStyle(
+            color: Theme
+                .of(context)
+                .accentColor,
+          ),
         ),
-        body: ListView(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Theme
+                  .of(context)
+                  .accentColor,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.shopping_basket,
+              color: Theme
+                  .of(context)
+                  .accentColor,
+            ),
+            onPressed: null,
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: () async {
+          return setState(() {
+            refreshNotifier.sink.add(null);
+          });
+        },
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        child: ListView(
           children: <Widget>[
             SizedBox(
               height: 5.0,
@@ -87,11 +123,19 @@ class _ExplorePageState extends State<ExplorePage> {
                   .of(context)
                   .size
                   .height * 0.5,
-              child: ProductsView(),
+              child: ProductsView(
+                refreshTrigger: refreshNotifier.stream,
+              ),
             )
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    refreshNotifier.close();
+    super.dispose();
   }
 }

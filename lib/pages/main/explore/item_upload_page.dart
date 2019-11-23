@@ -213,7 +213,9 @@ class ItemUploadPageState extends State<ItemUploadPage> {
           border: Border.all(),
           color: _imageFiles.length == 0
               ? Theme.of(context).primaryColor
-              : Colors.white,
+              : Theme
+              .of(context)
+              .accentColor,
         ),
         child: _imageFiles.length == 0
             ? Center(

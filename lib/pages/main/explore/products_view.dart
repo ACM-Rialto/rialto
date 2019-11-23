@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +10,38 @@ import 'package:rialto/utils/text_utilities.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
+  final Stream refreshTrigger;
 
-  ProductsView({Key key}) : super(key: key);
+  ProductsView({this.refreshTrigger});
 
-  _ProductsViewState createState() => _ProductsViewState();
+  ProductsViewState createState() => ProductsViewState();
 }
 
-class _ProductsViewState extends State<ProductsView> {
+class ProductsViewState extends State<ProductsView> {
   final List<Product> _products = new List();
-  Key _scrollKey = new PageStorageKey('scroll-preservation');
+  final Key _scrollKey = new PageStorageKey('scroll-preservation');
+  StreamSubscription streamSubscription;
 
   @override
   void initState() {
     super.initState();
+    refreshProducts();
+    streamSubscription = widget.refreshTrigger.listen((_) => refreshProducts());
+  }
+
+  @override
+  void didUpdateWidget(ProductsView old) {
+    super.didUpdateWidget(old);
+    // in case the stream instance changed, subscribe to the new one
+    if (widget.refreshTrigger != old.refreshTrigger) {
+      streamSubscription.cancel();
+      streamSubscription =
+          widget.refreshTrigger.listen((_) => refreshProducts());
+    }
+  }
+
+  void refreshProducts() {
+    _products.clear();
     CollectionReference itemsReference = widget.firestore.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {
@@ -54,6 +75,12 @@ class _ProductsViewState extends State<ProductsView> {
         return _SingleProductView(_products[index]);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    streamSubscription.cancel();
   }
 }
 
