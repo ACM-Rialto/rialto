@@ -20,7 +20,6 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   void initState() {
     super.initState();
-    print('init');
     CollectionReference itemsReference = widget.firestore.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {

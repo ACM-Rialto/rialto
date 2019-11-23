@@ -83,7 +83,10 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
             ),
             Container(
-              height: 560.0,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.5,
               child: ProductsView(),
             )
           ],
