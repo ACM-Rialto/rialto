@@ -19,28 +19,28 @@ class HorizontalList extends StatelessWidget {
             imageCaption: 'Men\'s Fashion',
           ),
           Category(
-            imageLocation: 'assets/category/shoes.png',
-            imageCaption: 'Shoe',
-          ),
-          Category(
-            imageLocation: 'assets/category/sunglass.png',
-            imageCaption: 'Sun Glass',
-          ),
-          Category(
-            imageLocation: 'assets/category/watch.png',
-            imageCaption: 'Watch',
-          ),
-          Category(
             imageLocation: 'assets/category/womenfashion.png',
             imageCaption: 'Women\'s Fashion',
           ),
           Category(
-            imageLocation: 'assets/category/homeappliances.png',
-            imageCaption: 'Home Appliances',
+            imageLocation: 'assets/category/shoes.png',
+            imageCaption: 'Shoes',
+          ),
+          Category(
+            imageLocation: 'assets/category/watch.png',
+            imageCaption: 'Watches',
           ),
           Category(
             imageLocation: 'assets/category/jewellery.png',
-            imageCaption: 'Jewellery',
+            imageCaption: 'Jewelry',
+          ),
+          Category(
+            imageLocation: 'assets/category/sunglass.png',
+            imageCaption: 'Sunglasses',
+          ),
+          Category(
+            imageLocation: 'assets/category/homeappliances.png',
+            imageCaption: 'Home Appliances',
           ),
         ],
       ),
