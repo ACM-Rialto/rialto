@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class HorizontalList extends StatelessWidget {
-  const HorizontalList({Key key}) : super(key: key);
+  final double height;
+
+  const HorizontalList({@required this.height});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130.0,
+      height: height,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[

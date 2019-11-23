@@ -98,7 +98,12 @@ class _ExplorePageState extends State<ExplorePage> {
                     color: Colors.black),
               ),
             ),
-            HorizontalList(),
+            HorizontalList(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.2,
+            ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
