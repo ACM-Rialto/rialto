@@ -20,6 +20,7 @@ class LoginPageState extends State<LoginPage> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            _buildLogo(),
             _buildWelcomeText(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -181,6 +182,18 @@ class LoginPageState extends State<LoginPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 10,
+      ),
+      child: Container(
+        height: 150,
+        child: Image.asset("assets/images/logo.png", fit: BoxFit.fitHeight),
       ),
     );
   }
