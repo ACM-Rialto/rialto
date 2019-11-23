@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
 import 'package:rialto/utils/text_utilities.dart';
@@ -90,17 +91,23 @@ class _SingleProductView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  getTextWithCap(_product.name, 15),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                Center(
+                  child: Text(
+                    getTextWithCap(_product.name, 15),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),
                   ),
                 ),
-                Text(
-                  "\$${_product.price}",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Center(
+                    child: Text(
+                      "${NumberFormat.simpleCurrency().format(_product.price)}",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ),
                 FlatButton(
                   color: Colors.redAccent,
