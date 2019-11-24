@@ -33,11 +33,11 @@ class HorizontalList extends StatelessWidget {
             imageCaption: 'Watches',
           ),
           Category(
-            imageLocation: 'assets/category/jewellery.png',
+            imageLocation: 'assets/category/jewelry.png',
             imageCaption: 'Jewelry',
           ),
           Category(
-            imageLocation: 'assets/category/sunglass.png',
+            imageLocation: 'assets/category/sunglasses.png',
             imageCaption: 'Sunglasses',
           ),
           Category(

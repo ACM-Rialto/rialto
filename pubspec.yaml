@@ -58,10 +58,10 @@ flutter:
     - assets/images/background.png
     - assets/category/electronics.png
     - assets/category/homeappliances.png
-    - assets/category/jewellery.png
+    - assets/category/jewelry.png
     - assets/category/manfashion.png
     - assets/category/shoes.png
-    - assets/category/sunglass.png
+    - assets/category/sunglasses.png
     - assets/category/watch.png
     - assets/category/womenfashion.png
     - assets/slider/slider1.jpg
