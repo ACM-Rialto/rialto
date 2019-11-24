@@ -35,6 +35,12 @@ dependencies:
   cached_network_image: ^1.1.3
   intl: ^0.16.0
   simple_animations: ^1.3.4
+  flutter_launcher_icons: ^0.7.2+1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appicon.png"
 
 dev_dependencies:
   flutter_test:

@@ -6,12 +6,6 @@ import 'package:rialto/pages/front/front_page.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 class LoginPage extends FrontPage {
-  final logoAnimationTween = MultiTrackTween([
-    Track("rotation").add(Duration(seconds: 2), Tween(begin: 0.0, end: 2 * pi),
-        curve: Curves.easeOutSine),
-    Track("size").add(Duration(seconds: 2), Tween(begin: 0.0, end: 150.0)),
-  ]);
-
   @override
   State<StatefulWidget> createState() {
     return LoginPageState();
@@ -29,7 +23,7 @@ class LoginPageState extends State<LoginPage> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _buildAnimatedLogo(),
+            _buildLogo(),
             _buildWelcomeText(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -196,15 +190,45 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 10,
-      ),
-      child: Container(
-        height: 150,
-        child: Image.asset("assets/images/logo.png", fit: BoxFit.fitHeight),
-      ),
-    );
+    return new Logo();
+  }
+}
+
+class Logo extends StatefulWidget {
+  final logoAnimationTween = MultiTrackTween([
+    Track("rotation").add(Duration(seconds: 2), Tween(begin: 0.0, end: 2 * pi),
+        curve: Curves.easeOutSine),
+    Track("size").add(Duration(seconds: 2), Tween(begin: 0.0, end: 150.0)),
+  ]);
+
+  @override
+  State<StatefulWidget> createState() {
+    return new LogoState();
+  }
+}
+
+class LogoState extends State<Logo> {
+  final Image _logo = Image.asset("assets/images/logo.png");
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    ImageListener imageListener = (ImageInfo imageInfo, syncCall) async {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    };
+    _logo.image
+        .resolve(new ImageConfiguration())
+        .addListener(new ImageStreamListener(imageListener));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _loading ? Container() : _buildAnimatedLogo();
   }
 
   Widget _buildAnimatedLogo() {
