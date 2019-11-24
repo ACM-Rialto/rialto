@@ -15,12 +15,19 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
     FillerNavigationPageText('CART'),
     FillerNavigationPageText('PROFILE'),
   ];
+  final _pageController = PageController();
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: PageView(
+        children: _children,
+        controller: _pageController,
+        onPageChanged: onTabTapped,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
+        onTap: (index) {
+          _pageController.jumpToPage(index);
+        },
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
@@ -37,17 +44,6 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
           )
         ],
       ),
-    );
-  }
-
-  Widget buildRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg')
-      ],
     );
   }
 

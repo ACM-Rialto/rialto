@@ -12,13 +12,21 @@ class ExplorePage extends StatefulWidget implements NavigationPage {
   _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> {
+class _ExplorePageState extends State<ExplorePage>
+    with AutomaticKeepAliveClientMixin<ExplorePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
   final refreshNotifier = new StreamController.broadcast();
 
   @override
+  void initState() {
+    super.initState();
+    print('init');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -143,4 +151,7 @@ class _ExplorePageState extends State<ExplorePage> {
     refreshNotifier.close();
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
