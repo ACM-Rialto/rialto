@@ -1,8 +1,17 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/front/front_page.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class LoginPage extends FrontPage {
+  final logoAnimationTween = MultiTrackTween([
+    Track("rotation").add(Duration(seconds: 2), Tween(begin: 0.0, end: 2 * pi),
+        curve: Curves.easeOutSine),
+    Track("size").add(Duration(seconds: 2), Tween(begin: 0.0, end: 150.0)),
+  ]);
+
   @override
   State<StatefulWidget> createState() {
     return LoginPageState();
@@ -20,7 +29,7 @@ class LoginPageState extends State<LoginPage> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _buildLogo(),
+            _buildAnimatedLogo(),
             _buildWelcomeText(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -195,6 +204,31 @@ class LoginPageState extends State<LoginPage> {
         height: 150,
         child: Image.asset("assets/images/logo.png", fit: BoxFit.fitHeight),
       ),
+    );
+  }
+
+  Widget _buildAnimatedLogo() {
+    return ControlledAnimation(
+      duration: widget.logoAnimationTween.duration,
+      tween: widget.logoAnimationTween,
+      builder: (context, animation) {
+        return Transform.rotate(
+          angle: animation["rotation"],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Container(
+              width: animation["size"],
+              height: animation["size"],
+              child: Image.asset(
+                "assets/images/logo.png",
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
