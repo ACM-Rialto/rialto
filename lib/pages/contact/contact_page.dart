@@ -136,6 +136,32 @@ class _ContactPageState extends State<ContactPage> {
     final contactProvider = Provider.of<CRUDModel>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.redAccent,
+        title: Text('Rialto'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.space_bar,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/qr');
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_basket, color: Colors.white),
+            onPressed: null,
+          ),
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Form(

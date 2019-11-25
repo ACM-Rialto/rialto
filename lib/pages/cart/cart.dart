@@ -37,25 +37,54 @@ class CartPage extends StatefulWidget implements NavigationPage {
 class _CartPageState extends State<CartPage> {
 
   String _itemId = "item1";
-  String _sellerEmail = "seller@acmrialto.com";
+  // String _sellerEmail = "seller@acmrialto.com";
+  String _sellerEmail = "npd160030@utdallas.edu";
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Center(
-      child: RaisedButton(
-        child: Text("Contact Seller"),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContactPage(),
-              settings: RouteSettings(arguments: ContactPageArguments(_itemId, _sellerEmail))
-            )
-          );
-        },
-      )
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.redAccent,
+        title: Text('Rialto'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.space_bar,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/qr');
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_basket, color: Colors.white),
+            onPressed: null,
+          ),
+        ],
+      ),
     );
+    // return Center(
+    //   child: RaisedButton(
+    //     child: Text("Contact Seller"),
+    //     onPressed: () {
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) => ContactPage(),
+    //           settings: RouteSettings(arguments: ContactPageArguments(_itemId, _sellerEmail))
+    //         )
+    //       );
+    //     },
+    //   )
+    // );
   }
 
 }

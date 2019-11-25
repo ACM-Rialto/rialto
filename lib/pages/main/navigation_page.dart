@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/cart/cart.dart';
-import 'package:rialto/pages/contact/contact_page.dart';
+import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/explore/filler_page.dart';
-import 'package:rialto/pages/main/explore/home_widget.dart';
 
 class NavigationPageViewer extends StatefulWidget {
   State<StatefulWidget> createState() {

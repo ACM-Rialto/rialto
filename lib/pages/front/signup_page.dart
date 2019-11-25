@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/front/front_page.dart';
 import 'package:rialto/pages/front/signup_authentication.dart';
@@ -18,6 +19,8 @@ class _signupPageState extends State<signupPage> {
   String _email;
   String _password;
   String _errorMessage;
+  String _firstName;
+  String _lastName;
 
   bool _isIos;
   bool _isLoading;
@@ -41,9 +44,7 @@ class _signupPageState extends State<signupPage> {
     if (_validateAndSave()) {
       String userId = "";
       try {
-        userId = await widget.auth.signUp(_email, _password);
-        widget.auth.sendEmailVerification();
-        _showVerifyEmailSentDialog();
+        userId = await _signUpUser();
         print('Signed up user: $userId');
         setState(() {
           _isLoading = false;
@@ -124,6 +125,7 @@ class _signupPageState extends State<signupPage> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: _showPasswordInput(),
           ),
+          _showNameInput(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: _showPrimaryButton(),
@@ -210,6 +212,71 @@ class _signupPageState extends State<signupPage> {
     );
   }
 
+  Widget _showNameInput() {
+    const double borderRadius = 10.0;
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.7,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.35,
+            child: new TextFormField(
+              decoration: new InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(borderRadius),
+                  ),
+                ),
+                hintText: 'First',
+                filled: true,
+                fillColor: Theme
+                    .of(context)
+                    .accentColor,
+              ),
+              validator: (value) =>
+              value.isEmpty
+                  ? 'First name can\'t be empty'
+                  : null,
+              onSaved: (value) => _firstName = value.trim(),
+            ),
+          ),
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.35,
+            child: new TextFormField(
+              decoration: new InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(borderRadius),
+                  ),
+                ),
+                hintText: 'Last',
+                filled: true,
+                fillColor: Theme
+                    .of(context)
+                    .accentColor,
+              ),
+              validator: (value) =>
+              value.isEmpty
+                  ? 'Last name can\'t be empty'
+                  : null,
+              onSaved: (value) => _lastName = value.trim(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _showSecondaryButton() {
     return new FlatButton(
       child: new Text('Have an account? Sign in',
@@ -248,6 +315,24 @@ class _signupPageState extends State<signupPage> {
   }
 
   void _goToLogin() {
-    Navigator.of(context).pushReplacementNamed('/');
+    Navigator.of(context).pop();
+  }
+
+  Future<String> _signUpUser() async {
+    String userId = await widget.auth.signUp(_email, _password);
+    _addUserToFirebase();
+    widget.auth.sendEmailVerification();
+    _showVerifyEmailSentDialog();
+    return userId;
+  }
+
+  void _addUserToFirebase() {
+    CollectionReference usersCollection = Firestore.instance.collection(
+        'users');
+    usersCollection.document(_email).setData({
+      'first_name': _firstName,
+      'last_name': _lastName,
+      'reputation': 0,
+    });
   }
 }
