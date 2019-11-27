@@ -70,6 +70,20 @@ class _CartPageState extends State<CartPage> {
           ),
         ],
       ),
+      body: Center (
+        child: RaisedButton(
+          child: Text("Contact Seller"),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContactPage(),
+                settings: RouteSettings(arguments: ContactPageArguments(_itemId, _sellerEmail))
+              )
+            );
+          },
+        )
+      ),
     );
     // return Center(
     //   child: RaisedButton(
