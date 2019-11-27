@@ -16,7 +16,7 @@ let transporter = nodemailer.createTransport({
 
 exports.sendEmail = functions.firestore.document('contactBuyerToSeller/{id}').onWrite((change, context) => {
 
-    // const newValue = change.after.data();
+    const newValue = change.after.data();
     // console.log('newValue');
     // console.log(JSON.stringify(newValue));
 

@@ -37,8 +37,9 @@ class CartPage extends StatefulWidget implements NavigationPage {
 class _CartPageState extends State<CartPage> {
 
   String _itemId = "item1";
+  String _sellerEmail = "test@utdallas.edu";
   // String _sellerEmail = "seller@acmrialto.com";
-  String _sellerEmail = "npd160030@utdallas.edu";
+  // String _sellerEmail = "npd160030@utdallas.edu";
 
   @override
   Widget build(BuildContext context) {

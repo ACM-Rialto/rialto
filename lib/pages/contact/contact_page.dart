@@ -168,7 +168,7 @@ class _ContactPageState extends State<ContactPage> {
             key: _formKey,
             child: Column (
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.15)),
+                Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.05)),
                 Container(
                   width: MediaQuery
                       .of(context)
@@ -181,43 +181,19 @@ class _ContactPageState extends State<ContactPage> {
                       messageTextFormWidget,
                       Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.02)),
                       _buildSubmitButton("Submit", () async {
-                        // CupertinoAlertDialog(
-                        //   key: _formKey,
-                        //   title: Text("hello"),
-                        //   content: Text(_formKey.toString()),
-                        //   actions: <Widget>[
-                        //     CupertinoDialogAction(
-                        //       isDefaultAction: true,
-                        //       child: Text('Yes')
-                        //     ),
-                        //     CupertinoDialogAction(
-                        //       child: Text('No')
-                        //     )
-                        //   ],
-                        // );
                         _formKey.currentState.save();
                         try {
-                          // TODO: change second arg for updateProduct to an actual rand ID
-
-                          // if (widget.contact == null) {
-                          //   Scaffold.of(context).showSnackBar(SnackBar(content: Text("widget.contact == null")));
-                          //   // CupertinoAlertDialog(title: Text("hello"), content: Text("widget.contact == null"), actions: <Widget>[
-                          //   //   CupertinoDialogAction(isDefaultAction: true, child: Text('Yes')),
-                          //   //   CupertinoDialogAction(child: Text('No'))
-                          //   // ],);
-                          // }
-
                           await contactProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Successfully logged in!"),
+                              content: Text("Sent!"),
                             ),
                           );
                           Navigator.of(context).pushReplacementNamed('/home');
                         } catch (e) {
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Failed to login! (${e.code})"),
+                              content: Text("Failed to send... (${e.code})"),
                             ),
                           );
                         }
