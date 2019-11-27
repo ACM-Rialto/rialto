@@ -41,7 +41,7 @@ class RialtoApp extends StatelessWidget {
           '/cart': (context) => CartPage(),
           '/home': (context) => NavigationPageViewer(),
           '/qr': (context) => MasterQRPage(),
-          // '/qr/generate': (context) => GenerateCodePage(),
+          // '/qr/generate': (context) => GeneratedCodePage(),
           '/contactSeller': (context) => ContactPage(),
         },
       )
