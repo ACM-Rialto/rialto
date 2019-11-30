@@ -3,6 +3,8 @@ import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
+import 'package:rialto/pages/main/explore/search.dart';
+
 
 class HomePage extends StatefulWidget implements NavigationPage {
   HomePage({Key key}) : super(key: key);
@@ -36,7 +38,12 @@ class _HomePageState extends State<HomePage> {
                 Icons.search,
                 color: Colors.white,
               ),
-              onPressed: null,
+              onPressed: () {
+                showSearch(
+                context: context,
+                delegate: DataSearch()
+                );
+              },
             ),
             IconButton(
               icon: Icon(Icons.shopping_basket, color: Colors.white),

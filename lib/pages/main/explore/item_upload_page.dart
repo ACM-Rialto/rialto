@@ -19,6 +19,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
   String _itemName;
   String _itemDescription;
   double _itemPrice;
+  String _itemType;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +58,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         'image': await storageReference.getDownloadURL(),
         'interested_users': [],
         'names_for_email': new Map(),
+        'type': _itemType,
       });
     });
   }
@@ -99,6 +101,34 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                     ),
                     onSaved: (value) {
                       _itemName = value;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Item Type: tech,clothes,shoe,watch,home,jewelry',
+                      filled: true,
+                      fillColor: Theme
+                          .of(context)
+                          .accentColor,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    onSaved: (value) {
+                      _itemDescription = value;
                     },
                   ),
                 ),

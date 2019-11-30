@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
+import 'package:rialto/pages/main/item/product_info_page.dart';
 import 'package:rialto/utils/text_utilities.dart';
 
 class ProductsView extends StatefulWidget {
@@ -27,6 +28,7 @@ class _ProductsViewState extends State<ProductsView> {
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
+          type: documentSnapshot.data['type'],
         ));
       });
       setState(() {});
@@ -68,7 +70,12 @@ class _SingleProductView extends StatelessWidget {
           tag: _product.name,
           child: Material(
             child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProductInfo(prod: this._product)),
+            );
+                },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
