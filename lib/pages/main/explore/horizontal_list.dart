@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rialto/pages/main/explore/filler_page.dart';
+import 'package:rialto/pages/main/explore/prod_cat.dart';
 
 class HorizontalList extends StatelessWidget {
   const HorizontalList({Key key}) : super(key: key);
@@ -12,31 +14,23 @@ class HorizontalList extends StatelessWidget {
         children: <Widget>[
           Category(
             imageLocation: 'assets/category/electronics.png',
-            imageCaption: 'Electronics',
+            imageCaption: 'Tech',
           ),
           Category(
             imageLocation: 'assets/category/manfashion.png',
-            imageCaption: 'Men\'s Fashion',
+            imageCaption: 'Clothes',
           ),
           Category(
             imageLocation: 'assets/category/shoes.png',
             imageCaption: 'Shoe',
           ),
           Category(
-            imageLocation: 'assets/category/sunglass.png',
-            imageCaption: 'Sun Glass',
-          ),
-          Category(
             imageLocation: 'assets/category/watch.png',
             imageCaption: 'Watch',
           ),
           Category(
-            imageLocation: 'assets/category/womenfashion.png',
-            imageCaption: 'Women\'s Fashion',
-          ),
-          Category(
             imageLocation: 'assets/category/homeappliances.png',
-            imageCaption: 'Home Appliances',
+            imageCaption: 'Home',
           ),
           Category(
             imageLocation: 'assets/category/jewellery.png',
@@ -59,7 +53,12 @@ class Category extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProductCat(category: this.imageCaption)),
+          );
+        },
         child: Container(
           width: 100.0,
           height: 100,
