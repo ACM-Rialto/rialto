@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
 
 class DataSearch extends SearchDelegate<String> {
@@ -8,8 +9,9 @@ class DataSearch extends SearchDelegate<String> {
   final List prods = new List();
   final String category;
   final String seller;
+  final RialtoUser user;
 
-  DataSearch({this.category, this.seller});
+  DataSearch(this.user, {this.category, this.seller});
 
   void initState() {
     CollectionReference itemsReference = firestore.collection('items');
@@ -60,6 +62,7 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     return ProductsView(
+      user,
       populateProductsFromFirebase: populateProductsFromFirebase,
       refreshable: false,
     );

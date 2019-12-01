@@ -1,18 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
 import 'package:rialto/pages/main/explore/search.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
 class Profile extends StatefulWidget implements NavigationPage {
+  final RialtoUser user;
+
   @override
-  Profile({Key key}) : super(key: key);
+  Profile(this.user, {Key key}) : super(key: key);
 
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<Profile> {
+  String _name = "Unknown";
+  double _rating = 0.0;
+  int _transactions = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.user.getDocument().then((snap) {
+      _name = "${snap.data['first_name']} ${snap.data['last_name']}";
+      _rating = double.parse("${snap.data['reputation']}");
+      _transactions = snap.data['transactions'];
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +58,8 @@ class _ProfilePageState extends State<Profile> {
               showSearch(
                 context: context,
                 delegate: DataSearch(
-                  seller: 'a@utdallas.edu',
+                  widget.user,
+                  seller: widget.user.firebaseUser.email,
                 ),
               );
             },
@@ -78,7 +97,7 @@ class _ProfilePageState extends State<Profile> {
                             Row(
                               children: <Widget>[
                                 Text(
-                                  'Arham Siddiqui',
+                                  '$_name',
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
@@ -97,7 +116,7 @@ class _ProfilePageState extends State<Profile> {
                                       height: 2.0,
                                     ),
                                     Text(
-                                      "5.0",
+                                      "$_rating",
                                       style: TextStyle(
                                         color: Theme
                                             .of(context)
@@ -124,7 +143,7 @@ class _ProfilePageState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '100 Transactions',
+                              '${_transactions} Transactions',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -151,6 +170,7 @@ class _ProfilePageState extends State<Profile> {
           .size
           .height * 0.5,
       child: ProductsView(
+        widget.user,
         populateProductsFromFirebase: populateProductsFromFirebase,
         refreshable: false,
       ),
@@ -162,7 +182,7 @@ class _ProfilePageState extends State<Profile> {
     products.clear();
     Firestore.instance
         .collection('items')
-        .where('seller', isEqualTo: 'a@utdallas.edu')
+        .where('seller', isEqualTo: widget.user.firebaseUser.email)
         .snapshots()
         .forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {

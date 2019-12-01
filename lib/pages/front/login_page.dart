@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/front/front_page.dart';
+import 'package:rialto/pages/main/navigation_page.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 class LoginPage extends FrontPage {
@@ -64,8 +66,15 @@ class LoginPageState extends State<LoginPage> {
             content: Text("Successfully logged in!"),
           ),
         );
+        RialtoUser rialtoUser = new RialtoUser(firebaseUser: auth.user);
         Navigator.pop(context); // dismiss the loading dialog
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(
+            builder: (context) {
+              return NavigationPageViewer(rialtoUser);
+            },
+          ),
+        );
       } catch (e) {
         Scaffold.of(context).showSnackBar(
           SnackBar(

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/profile.dart';
 
 class NavigationPageViewer extends StatefulWidget {
+  final RialtoUser rialtoUser;
+
+  NavigationPageViewer(this.rialtoUser);
+
   State<StatefulWidget> createState() {
     return _NavigationPageViewerState();
   }
@@ -11,12 +16,17 @@ class NavigationPageViewer extends StatefulWidget {
 
 class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
-  final List<NavigationPage> _children = [
-    ExplorePage(),
-    CartPage(),
-    Profile(),
-  ];
+  List<NavigationPage> _children;
   final _pageController = PageController();
+
+  void initState() {
+    super.initState();
+    _children = [
+      ExplorePage(widget.rialtoUser),
+      CartPage(widget.rialtoUser),
+      Profile(widget.rialtoUser),
+    ];
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(

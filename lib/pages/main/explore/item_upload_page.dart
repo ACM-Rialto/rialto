@@ -4,8 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rialto/data/rialto_user.dart';
 
 class ItemUploadPage extends StatefulWidget {
+  final RialtoUser user;
+
+  ItemUploadPage(this.user);
+
   @override
   State<StatefulWidget> createState() {
     return new ItemUploadPageState();
@@ -64,7 +69,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         'name': _itemName,
         'description': _itemDescription,
         'price': _itemPrice,
-        'seller': 'a@utdallas.edu',
+        'seller': widget.user.firebaseUser.email,
         'image': await storageReference.getDownloadURL(),
         'interested_users': [],
         'names_for_email': new Map(),

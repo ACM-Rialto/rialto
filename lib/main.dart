@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rialto/locator.dart';
-import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/front/front_page.dart';
 import 'package:rialto/pages/front/login_page.dart';
 import 'package:rialto/pages/front/signup_authentication.dart';
 import 'package:rialto/pages/front/signup_page.dart';
-import 'package:rialto/pages/main/cart/cart.dart';
-import 'package:rialto/pages/main/navigation_page.dart';
-import 'package:rialto/pages/qr/master_qr_page.dart';
 import 'package:rialto/viewmodels/CRUDModel.dart';
 
 void main() {
@@ -37,11 +33,6 @@ class RialtoApp extends StatelessWidget {
         routes: {
           '/': (context) => FrontPageViewer(page: LoginPage()),
           '/sign-up': (context) => FrontPageViewer(page: signupPage(auth: Auth())),
-          '/cart': (context) => CartPage(),
-          '/home': (context) => NavigationPageViewer(),
-          '/qr': (context) => MasterQRPage(),
-          // '/qr/generate': (context) => GeneratedCodePage(),
-          '/contactSeller': (context) => ContactPage(),
         },
       )
     );

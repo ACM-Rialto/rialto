@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
 import 'package:rialto/pages/main/explore/search.dart';
 
 class ProductCategoryPage extends StatelessWidget {
   final String category;
+  final RialtoUser user;
 
-  ProductCategoryPage({this.category});
+  ProductCategoryPage(this.user, {this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,10 @@ class ProductCategoryPage extends StatelessWidget {
           onPressed: () {
             showSearch(
               context: context,
-              delegate: DataSearch(category: category),
+              delegate: DataSearch(
+                user,
+                category: category,
+              ),
             );
           },
         ),
@@ -48,6 +53,7 @@ class ProductCategoryPage extends StatelessWidget {
             .size
             .height,
         child: ProductsView(
+          user,
           populateProductsFromFirebase: populateProductsFromFirebase,
           refreshable: false,
         ),

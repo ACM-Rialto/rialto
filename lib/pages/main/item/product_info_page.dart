@@ -3,15 +3,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
 
 class ProductInformationPage extends StatelessWidget {
   final Product product;
+  final RialtoUser user;
   final GlobalKey scaffoldKey = new GlobalKey();
 
-  ProductInformationPage({this.product});
+  ProductInformationPage(this.user, {this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class ProductInformationPage extends StatelessWidget {
                   .height * 0.075,
               child: FlatButton(
                 child: Text(
-                  product.sellerEmail == 'a@utdallas.edu'
+                  product.sellerEmail == user.firebaseUser.email
                       ? "View Interested"
                       : "Mark Interested",
                   style: TextStyle(
@@ -158,17 +160,17 @@ class ProductInformationPage extends StatelessWidget {
         .get();
     // todo simplify this with helper class for firestore
     Map namesForEmail = snapshot.data['names_for_email'];
-    if (product.sellerEmail == "a@utdallas.edu") {
+    if (product.sellerEmail == user.firebaseUser.email) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: Colors.white,
-              content: InterestedUsersView(snapshot),
+              content: InterestedUsersView(user, snapshot),
             );
           });
     } else {
-      namesForEmail['a@utdallas.edu'] = 'Arham Siddiqui';
+      namesForEmail[user.firebaseUser.email] = 'Arham Siddiqui';
       snapshot.reference.updateData({
         'names_for_email': namesForEmail,
       });

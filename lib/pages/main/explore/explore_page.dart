@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
 import 'package:rialto/pages/main/explore/products_view.dart';
@@ -10,7 +11,9 @@ import 'package:rialto/pages/main/explore/search.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
 class ExplorePage extends StatefulWidget implements NavigationPage {
-  ExplorePage({Key key}) : super(key: key);
+  final RialtoUser user;
+
+  ExplorePage(this.user, {Key key}) : super(key: key);
 
   _ExplorePageState createState() => _ExplorePageState();
 }
@@ -24,7 +27,6 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   void initState() {
     super.initState();
-    print('init');
   }
 
   @override
@@ -35,7 +37,12 @@ class _ExplorePageState extends State<ExplorePage>
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ItemUploadPage()),
+            MaterialPageRoute(
+              builder: (context) =>
+                  ItemUploadPage(
+                    widget.user,
+                  ),
+            ),
           );
         },
         child: Icon(
@@ -71,7 +78,7 @@ class _ExplorePageState extends State<ExplorePage>
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: DataSearch(),
+                delegate: DataSearch(widget.user),
               );
             },
           ),
@@ -106,6 +113,7 @@ class _ExplorePageState extends State<ExplorePage>
               ),
             ),
             HorizontalList(
+              widget.user,
               height: MediaQuery
                   .of(context)
                   .size
@@ -136,6 +144,7 @@ class _ExplorePageState extends State<ExplorePage>
                   .size
                   .height * 0.5,
               child: ProductsView(
+                widget.user,
                 populateProductsFromFirebase: populateProductsFromFirebase,
                 refreshable: true,
                 refreshTrigger: refreshNotifier.stream,
