@@ -15,11 +15,21 @@ class ItemUploadPage extends StatefulWidget {
 class ItemUploadPageState extends State<ItemUploadPage> {
   static final _formKey = GlobalKey<FormState>();
   final List<File> _imageFiles = new List();
+  static final _categories = [
+    "Choose Category",
+    "Tech",
+    "Clothes",
+    "Shoes",
+    "Watches",
+    "Jewelry",
+    "Sunglasses",
+    "Home"
+  ];
 
   String _itemName;
   String _itemDescription;
   double _itemPrice;
-  String _category = "Choose Category";
+  String _category = _categories[0];
 
   @override
   Widget build(BuildContext context) {
@@ -123,17 +133,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: _category,
-                        hint: Text("Item Category"),
-                        items: <String>[
-                          "Choose Category"
-                              "Tech",
-                          "Clothes",
-                          "Shoes",
-                          "Watches",
-                          "Jewelry",
-                          "Sunglasses",
-                          "Home"
-                        ].map<DropdownMenuItem<String>>(
+                        items: _categories.map<DropdownMenuItem<String>>(
                               (String value) {
                             return DropdownMenuItem<String>(
                               value: value,
