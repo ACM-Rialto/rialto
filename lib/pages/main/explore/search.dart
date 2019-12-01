@@ -7,8 +7,9 @@ class DataSearch extends SearchDelegate<String> {
   final Firestore firestore = Firestore.instance;
   final List prods = new List();
   final String category;
+  final String seller;
 
-  DataSearch({this.category});
+  DataSearch({this.category, this.seller});
 
   void initState() {
     CollectionReference itemsReference = firestore.collection('items');
@@ -94,9 +95,16 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   Query getFirestoreQuery() {
-    return Firestore.instance
+    Query q = Firestore.instance
         .collection('items')
         .where('name', isGreaterThanOrEqualTo: query);
+    if (category != null) {
+      q = q.where('category', isEqualTo: category);
+    }
+    if (seller != null) {
+      q = q.where('seller', isEqualTo: seller);
+    }
+    return q;
   }
 
   void populateProductsFromFirebase(List<Product> products, State state) {

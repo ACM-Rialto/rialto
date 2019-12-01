@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rialto/data/product.dart';
+import 'package:rialto/pages/main/explore/products_view.dart';
+import 'package:rialto/pages/main/explore/search.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 
-class Profile extends StatefulWidget implements NavigationPage{
+class Profile extends StatefulWidget implements NavigationPage {
   @override
   Profile({Key key}) : super(key: key);
+
   _ProfilePageState createState() => _ProfilePageState();
 }
 
@@ -12,118 +17,126 @@ class _ProfilePageState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        title: Text(
+          'Rialto',
+          style: TextStyle(
+            color: Theme
+                .of(context)
+                .accentColor,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Theme
+                  .of(context)
+                  .accentColor,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: DataSearch(
+                  seller: 'a@utdallas.edu',
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Hero(
-                tag: 'assets/profiles/prof1.jpg',
-                child: Container(
-                  height: 125.0,
-                  width: 125.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(62.5),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/profiles/prof1.jpg'))),
-                ),
-              ),
-              SizedBox(height: 25.0),
-              Text(
-                'Mark Stewart',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4.0),
-              Text(
-                'San Jose, CA',
-                style: TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
-              ),
               Padding(
-                padding: EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(25.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '24K',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
+                    Hero(
+                      tag: 'assets/profile/blank.jpg',
+                      child: Container(
+                        height: 125.0,
+                        width: 125.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(62.5),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/profile/blank.jpg'),
+                          ),
                         ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          'FOLLOWERS',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: Colors.grey),
-                        )
-                      ],
+                      ),
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          '31',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'Arham Siddiqui',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 2.0,
+                                    ),
+                                    Text(
+                                      "5.0",
+                                      style: TextStyle(
+                                        color: Theme
+                                            .of(context)
+                                            .primaryColor,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              'The University of Texas at Dallas',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          'TRIPS',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '21',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
+                        SizedBox(height: 20.0),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '100 Transactions',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          'BUCKET LIST',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: Colors.grey),
-                        )
                       ],
                     )
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    IconButton(icon: Icon(Icons.table_chart)),
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ),
-              buildImages(),
-              buildInfoDetail(),
-              buildImages(),
-              buildInfoDetail(),
+              buildPosts(),
             ],
           )
         ],
@@ -131,97 +144,39 @@ class _ProfilePageState extends State<Profile> {
     );
   }
 
-  Widget buildImages() {
-    return Padding(
-      padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
-      child: Container(
-          height: 200.0,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              image: DecorationImage(
-                  image: AssetImage('assets/images/beach1.jpg'), fit: BoxFit.cover))),
+  Widget buildPosts() {
+    return Container(
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.5,
+      child: ProductsView(
+        populateProductsFromFirebase: populateProductsFromFirebase,
+        refreshable: false,
+      ),
     );
   }
 
-  Widget buildInfoDetail() {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: 25.0, right: 25.0, top: 10.0, bottom: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Maldives - 12 Days',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 15.0),
-              ),
-              SizedBox(height: 7.0),
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Teresa Soto',
-                    style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontFamily: 'Montserrat',
-                        fontSize: 11.0),
-                  ),
-                  SizedBox(width: 4.0),
-                  Icon(
-                    Icons.timer,
-                    size: 4.0,
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 4.0),
-                  Text(
-                    '3 Videos',
-                    style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontFamily: 'Montserrat',
-                        fontSize: 11.0),
-                  )
-                ],
-              )
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(width: 7.0),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 20.0,
-                  width: 20.0,
-                  child: Image.asset('assets/images/desk.jpg'),
-                ),
-              ),
-              SizedBox(width: 7.0),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 20.0,
-                  width: 20.0,
-                  child: Image.asset('assets/images/desk.jpg'),
-                ),
-              ),
-              SizedBox(width: 7.0),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 22.0,
-                  width: 22.0,
-                  child: Image.asset('assets/images/desk.jpg'),
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+  void populateProductsFromFirebase(List<Product> products,
+      State<StatefulWidget> state) {
+    products.clear();
+    Firestore.instance
+        .collection('items')
+        .where('seller', isEqualTo: 'a@utdallas.edu')
+        .snapshots()
+        .forEach((snapshot) {
+      snapshot.documents.forEach((documentSnapshot) {
+        products.add(new Product(
+          name: documentSnapshot.data['name'],
+          price: double.parse("${documentSnapshot.data['price']}"),
+          documentId: documentSnapshot.reference.documentID,
+          description: documentSnapshot.data['description'],
+          image: documentSnapshot.data['image'],
+          sellerEmail: documentSnapshot.data['seller'],
+          category: documentSnapshot.data['category'],
+        ));
+      });
+      state.setState(() {});
+    });
   }
 }
