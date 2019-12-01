@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:rialto/data/product.dart';
-import 'package:rialto/pages/main/explore/horizontal_list.dart';
 
 class ProductCat extends StatelessWidget {
 

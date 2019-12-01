@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rialto/pages/main/explore/prod_cat.dart';
+import 'package:rialto/pages/main/explore/product_category_page.dart';
 
 class HorizontalList extends StatelessWidget {
   final double height;
