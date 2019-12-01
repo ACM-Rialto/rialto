@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rialto/pages/contact/contactPageArguments.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
+import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/explore/search.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 

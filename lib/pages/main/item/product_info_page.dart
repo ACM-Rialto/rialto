@@ -3,8 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
-import 'package:rialto/pages/contact/contactPageArguments.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
+import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
 
 class ProductInformationPage extends StatelessWidget {
