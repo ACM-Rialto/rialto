@@ -20,6 +20,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
   String _itemDescription;
   double _itemPrice;
   String _itemType;
+  String _category = "Electronics";
 
   @override
   Widget build(BuildContext context) {
@@ -112,24 +113,42 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                       .of(context)
                       .size
                       .width * 0.8,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Item Type: tech,clothes,shoe,watch,home,jewelry',
-                      filled: true,
-                      fillColor: Theme
-                          .of(context)
-                          .accentColor,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
                     ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                    onSaved: (value) {
-                      _itemDescription = value;
-                    },
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _category,
+                        hint: Text("Item Category"),
+                        items: <String>[
+                          "Electronics",
+                          "Men's Fashion",
+                          "Women's Fashion",
+                          "Shoes",
+                          "Watches",
+                          "Jewelry",
+                          "Sunglasses",
+                          "Home Appliances"
+                        ].map<DropdownMenuItem<String>>(
+                              (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _category = newValue;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
