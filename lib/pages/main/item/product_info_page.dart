@@ -1,16 +1,22 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
+import 'package:rialto/pages/contact/contactPageArguments.dart';
+import 'package:rialto/pages/contact/contact_page.dart';
+import 'package:rialto/pages/main/item/interested_users_view.dart';
 
 class ProductInformationPage extends StatelessWidget {
   final Product product;
+  final GlobalKey scaffoldKey = new GlobalKey();
 
   ProductInformationPage({this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Theme
             .of(context)
@@ -37,7 +43,18 @@ class ProductInformationPage extends StatelessWidget {
                         .accentColor,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactPage(),
+                      settings: RouteSettings(
+                        arguments: ContactPageArguments(
+                            product.documentId, product.sellerEmail),
+                      ),
+                    ),
+                  );
+                },
                 color: Colors.grey.shade800,
               ),
             ),
@@ -52,14 +69,18 @@ class ProductInformationPage extends StatelessWidget {
                   .height * 0.075,
               child: FlatButton(
                 child: Text(
-                  "Mark Interested",
+                  product.sellerEmail == 'a@utdallas.edu'
+                      ? "View Interested"
+                      : "Mark Interested",
                   style: TextStyle(
                     color: Theme
                         .of(context)
                         .accentColor,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  markItemInterested(context);
+                },
                 color: Theme
                     .of(context)
                     .primaryColor,
@@ -128,5 +149,35 @@ class ProductInformationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future markItemInterested(BuildContext context) async {
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('items')
+        .document(product.documentId)
+        .get();
+    // todo simplify this with helper class for firestore
+    Map namesForEmail = snapshot.data['names_for_email'];
+    if (product.sellerEmail == "a@utdallas.edu") {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              content: InterestedUsersView(snapshot),
+            );
+          });
+    } else {
+      namesForEmail['a@utdallas.edu'] = 'Arham Siddiqui';
+      snapshot.reference.updateData({
+        'names_for_email': namesForEmail,
+      });
+      ScaffoldState scaffold = scaffoldKey.currentState;
+      scaffold.showSnackBar(
+        new SnackBar(
+          content: new Text("You have marked this item as interested!"),
+        ),
+      );
+    }
   }
 }
