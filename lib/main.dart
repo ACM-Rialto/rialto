@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rialto/locator.dart';
-import 'package:rialto/pages/cart/cart.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/front/front_page.dart';
 import 'package:rialto/pages/front/login_page.dart';
 import 'package:rialto/pages/front/signup_authentication.dart';
 import 'package:rialto/pages/front/signup_page.dart';
+import 'package:rialto/pages/main/cart/cart.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
-import 'package:rialto/pages/qr/generate_code_page.dart';
 import 'package:rialto/pages/qr/master_qr_page.dart';
 import 'package:rialto/viewmodels/CRUDModel.dart';
 

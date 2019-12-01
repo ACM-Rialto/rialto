@@ -96,7 +96,8 @@ class _SingleProductView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ProductInfo(prod: this._product)),
+                    builder: (context) =>
+                        ProductInformationPage(product: this._product)),
               );
             },
             child: Column(

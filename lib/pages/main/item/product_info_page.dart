@@ -1,48 +1,64 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
 
-class ProductInfo extends StatelessWidget {
-  final Product prod;
+class ProductInformationPage extends StatelessWidget {
+  final Product product;
 
-  ProductInfo({this.prod});
+  ProductInformationPage({this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: Text("PRODUCT INFORMATION"),
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
       ),
       body: Container(
         padding: EdgeInsets.all(12.0),
         alignment: Alignment.centerLeft,
         child: ListView(
           children: <Widget>[
-            Image.network(
-              prod.image,
-              height: 250,
-              width: 400,
+            Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.5,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: new CachedNetworkImage(
+                imageUrl: product.image,
+                placeholder: (context, url) =>
+                    CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.redAccent)),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/logo.png"),
+                fit: BoxFit.contain,
+              ),
             ),
             Text(
-              "${prod.name}",
+              "${product.name}",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black87,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 25),
             new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Price: \$${prod.price}",
+                  "Price: \$${product.price}",
                   style: TextStyle(
                     fontSize: 25,
                     color: Colors.redAccent,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 125),
                 new FlatButton(
                   color: Colors.white,
                   onPressed: () {},
@@ -62,7 +78,7 @@ class ProductInfo extends StatelessWidget {
                 child: new Column(
                   children: <Widget>[
                     Text(
-                      "Description: ${prod.description}",
+                      '${product.description}',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
