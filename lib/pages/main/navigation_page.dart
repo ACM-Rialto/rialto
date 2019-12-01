@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rialto/pages/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/explore/filler_page.dart';
+import 'package:rialto/pages/main/profile.dart';
 
 class NavigationPageViewer extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -13,10 +14,8 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
   final List<NavigationPage> _children = [
     HomePage(),
-    // ContactPage(),
     CartPage(),
-    // FillerNavigationPageText('CART'),
-    FillerNavigationPageText('PROFILE'),
+    Profile(),
   ];
 
   Widget build(BuildContext context) {

@@ -7,6 +7,7 @@ class Product {
   String image;
   String sellerEmail;
   String documentId;
+  String type;
 
   Product(
       {@required this.name,
@@ -14,5 +15,7 @@ class Product {
         @required this.documentId,
       this.description,
       @required this.image,
-      @required this.sellerEmail});
+      @required this.sellerEmail,
+      @required this.type});
 }
+
