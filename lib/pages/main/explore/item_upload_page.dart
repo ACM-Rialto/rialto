@@ -233,7 +233,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                         _formKey.currentState.save();
                       }
                       await createRecord(databaseReference);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pop(context);
                     },
                   ),
                 ),
