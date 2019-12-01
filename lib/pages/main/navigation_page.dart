@@ -13,16 +13,23 @@ class NavigationPageViewer extends StatefulWidget {
 class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
   final List<NavigationPage> _children = [
-    HomePage(),
+    ExplorePage(),
     CartPage(),
     Profile(),
   ];
+  final _pageController = PageController();
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: PageView(
+        children: _children,
+        controller: _pageController,
+        onPageChanged: onTabTapped,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
+        onTap: (index) {
+          _pageController.jumpToPage(index);
+        },
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
@@ -39,17 +46,6 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
           )
         ],
       ),
-    );
-  }
-
-  Widget buildRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg')
-      ],
     );
   }
 

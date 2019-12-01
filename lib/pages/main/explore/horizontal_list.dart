@@ -1,40 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:rialto/pages/main/explore/filler_page.dart';
 import 'package:rialto/pages/main/explore/prod_cat.dart';
 
 class HorizontalList extends StatelessWidget {
-  const HorizontalList({Key key}) : super(key: key);
+  final double height;
+
+  const HorizontalList({@required this.height});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130.0,
+      height: height,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           Category(
             imageLocation: 'assets/category/electronics.png',
-            imageCaption: 'Tech',
+            imageCaption: 'Electronics',
           ),
           Category(
             imageLocation: 'assets/category/manfashion.png',
-            imageCaption: 'Clothes',
+            imageCaption: 'Men\'s Fashion',
+          ),
+          Category(
+            imageLocation: 'assets/category/womenfashion.png',
+            imageCaption: 'Women\'s Fashion',
           ),
           Category(
             imageLocation: 'assets/category/shoes.png',
-            imageCaption: 'Shoe',
+            imageCaption: 'Shoes',
           ),
           Category(
             imageLocation: 'assets/category/watch.png',
-            imageCaption: 'Watch',
+            imageCaption: 'Watches',
+          ),
+          Category(
+            imageLocation: 'assets/category/jewelry.png',
+            imageCaption: 'Jewelry',
+          ),
+          Category(
+            imageLocation: 'assets/category/sunglasses.png',
+            imageCaption: 'Sunglasses',
           ),
           Category(
             imageLocation: 'assets/category/homeappliances.png',
-            imageCaption: 'Home',
-          ),
-          Category(
-            imageLocation: 'assets/category/jewellery.png',
-            imageCaption: 'Jewellery',
+            imageCaption: 'Home Appliances',
           ),
         ],
       ),
@@ -55,8 +64,8 @@ class Category extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProductCat(category: this.imageCaption)),
+            context,
+            MaterialPageRoute(builder: (context) => ProductCat(category: this.imageCaption)),
           );
         },
         child: Container(

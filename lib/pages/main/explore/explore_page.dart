@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
 import 'package:rialto/pages/main/explore/item_upload_page.dart';
@@ -6,42 +8,65 @@ import 'package:rialto/pages/main/navigation_page.dart';
 import 'package:rialto/pages/main/explore/search.dart';
 
 
-class HomePage extends StatefulWidget implements NavigationPage {
-  HomePage({Key key}) : super(key: key);
+class ExplorePage extends StatefulWidget implements NavigationPage {
+  ExplorePage({Key key}) : super(key: key);
 
-  _HomePageState createState() => _HomePageState();
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ExplorePageState extends State<ExplorePage>
+    with AutomaticKeepAliveClientMixin<ExplorePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
+  final refreshNotifier = new StreamController.broadcast();
+
+  @override
+  void initState() {
+    super.initState();
+    print('init');
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ItemUploadPage()),
-            );
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.redAccent,
+    super.build(context);
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ItemUploadPage()),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          color: Theme
+              .of(context)
+              .accentColor,
         ),
         appBar: AppBar(
-          backgroundColor: Colors.redAccent,
-          title: Text('Rialto'),
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+          title: Text(
+            'Rialto',
+            style: TextStyle(
+              color: Theme
+                  .of(context)
+                  .accentColor,
+            ),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(
                 Icons.search,
-                color: Colors.white,
+                color: Theme
+                    .of(context)
+                    .accentColor,
               ),
               onPressed: () {
                 showSearch(
-                context: context,
-                delegate: DataSearch()
+                    context: context,
+                    delegate: DataSearch()
                 );
               },
             ),
@@ -69,7 +94,12 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.black),
               ),
             ),
-            HorizontalList(),
+            HorizontalList(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.2,
+            ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
@@ -90,12 +120,26 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              height: 560.0,
-              child: ProductsView(),
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.5,
+              child: ProductsView(
+                refreshTrigger: refreshNotifier.stream,
+              ),
             )
           ],
         ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    refreshNotifier.close();
+    super.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
