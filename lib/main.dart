@@ -10,7 +10,8 @@ import 'package:rialto/pages/front/signup_page.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 import 'package:rialto/pages/qr/generate_code_page.dart';
 import 'package:rialto/pages/qr/master_qr_page.dart';
-import 'package:rialto/viewmodels/CRUDModel.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
+import 'package:rialto/viewmodels/contact_crud.dart';
 
 void main() {
   setupLocator();
@@ -23,7 +24,7 @@ class RialtoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider (
       providers: [
-        ChangeNotifierProvider(builder: (_) => locator<CRUDModel>()),
+        ChangeNotifierProvider(builder: (_) => locator<ContactCRUD>()),
       ],
       child: MaterialApp(
         title: 'Rialto',
@@ -43,6 +44,7 @@ class RialtoApp extends StatelessWidget {
           '/qr': (context) => MasterQRPage(),
           // '/qr/generate': (context) => GeneratedCodePage(),
           '/contactSeller': (context) => ContactPage(),
+          '/review': (context) => ReviewPage(),
         },
       )
     );

@@ -6,7 +6,7 @@ import '../services/api.dart';
 // import '../models/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CRUDModel extends ChangeNotifier {
+class ContactCRUD extends ChangeNotifier {
   Api _api = locator<Api>();
 
   // List<Contact> contacts;

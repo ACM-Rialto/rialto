@@ -1,61 +1,71 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rialto/pages/contact/contactModel.dart';
-import 'package:rialto/pages/contact/contactPageArguments.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
-import 'package:rialto/viewmodels/contact_crud.dart';
+import 'package:rialto/pages/review_page/reviewPageArguments.dart';
+import 'package:rialto/viewmodels/review_crud.dart';
 
-class ContactPage extends StatefulWidget {
+class ReviewPage extends StatefulWidget implements NavigationPage {
 
-  Contact contact;
+  // Contact contact;
 
   // ContactPage({@required this.contact});
 
-  ContactPage();
+  ReviewPage();
 
   @override
-  _ContactPageState createState() => _ContactPageState();
+  _ReviewPageState createState() => _ReviewPageState();
 
 }
 
-class _ContactPageState extends State<ContactPage> {
+class _ReviewPageState extends State<ReviewPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String _email;
-  String _name;
-  String _message;
+  int rating;
+  String review;
 
   Widget _buildSubmitButton(String text, VoidCallback onPressed) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.7,
       height: 50,
       child: RaisedButton(
         child: Text(
           text,
-          style: TextStyle(
-            color: Theme
-                .of(context)
-                .accentColor,
-            fontSize: 16,
-          ),
+          style: TextStyle (
+            color: Theme.of(context).accentColor,
+            fontSize: 16
+          )
         ),
-        color: Theme
-            .of(context)
-            .primaryColor,
+        color: Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         onPressed: onPressed
-      ),
+      )
     );
   }
 
-  Widget get emailTextFormWidget {
+  Future<void> submitReview() {
+    _formKey.currentState.save();
+    try {
+      // await contactProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Sent!"),
+        ),
+      );
+      Navigator.of(context).pushReplacementNamed('/home');
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to send... (${e.code})"),
+        ),
+      );
+    };
+  }
+
+  Widget get ratingTextFormWidget {
     const double borderRadius = 20.0;
     return Container (
       width: MediaQuery.of(context).size.width * 0.7,
@@ -70,17 +80,17 @@ class _ContactPageState extends State<ContactPage> {
               const Radius.circular(borderRadius),
             )
           ),
-          hintText: 'Your Email',
+          hintText: 'test',
           filled: true,
           fillColor: Theme.of(context).accentColor,
         ),
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) => _email = value.trim()
+        // onSaved: (value) => review = value.trim()
       )
     );
   }
 
-  Widget get messageTextFormWidget {
+  Widget get reviewTextFormWidget {
     const double borderRadius = 20.0;
     return Container (
       width: MediaQuery.of(context).size.width * 0.7,
@@ -99,12 +109,12 @@ class _ContactPageState extends State<ContactPage> {
               const Radius.circular(borderRadius),
             ),
           ),
-          hintText: 'Message',
+          hintText: 'What was your experience with this transaction?',
           filled: true,
           fillColor: Theme.of(context).accentColor,
         ),
         // validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) => _message = value.trim()
+        onSaved: (value) => review = value.trim()
       )
     );
   }
@@ -132,8 +142,8 @@ class _ContactPageState extends State<ContactPage> {
     // TODO: implement build
     // _isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
-    final ContactPageArguments args = ModalRoute.of(context).settings.arguments;
-    final contactProvider = Provider.of<ContactCRUD>(context);
+    final ReviewPageArguments args = ModalRoute.of(context).settings.arguments;
+    final reivewProvider = Provider.of<ReviewCRUD>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -176,17 +186,17 @@ class _ContactPageState extends State<ContactPage> {
                       .width * 0.7,
                   child: Column(
                     children: <Widget>[
-                      emailTextFormWidget,
+                      ratingTextFormWidget,
                       Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.01)),
-                      messageTextFormWidget,
+                      reviewTextFormWidget,
                       Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.02)),
                       _buildSubmitButton("Submit", () async {
                         _formKey.currentState.save();
                         try {
-                          await contactProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
+                          // await contactProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Sent!"),
+                              content: Text("Done!"),
                             ),
                           );
                           Navigator.of(context).pushReplacementNamed('/home');

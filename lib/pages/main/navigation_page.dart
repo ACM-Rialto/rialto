@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rialto/pages/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/explore/filler_page.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class NavigationPageViewer extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -17,6 +18,7 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
     CartPage(),
     // FillerNavigationPageText('CART'),
     FillerNavigationPageText('PROFILE'),
+    ReviewPage(),
   ];
 
   Widget build(BuildContext context) {
@@ -37,6 +39,10 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.person),
             title: new Text('Profile'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.rate_review),
+            title: new Text('Review'),
           )
         ],
       ),
@@ -49,7 +55,8 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
       children: [
         Image.asset('assets/images/desk.jpg'),
         Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg')
+        Image.asset('assets/images/desk.jpg'),
+        Image.asset('assets/images/desk.jpg'),
       ],
     );
   }

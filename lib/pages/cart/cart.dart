@@ -5,7 +5,7 @@ import 'package:rialto/pages/contact/contactModel.dart';
 import 'package:rialto/pages/contact/contactPageArguments.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
-import 'package:rialto/viewmodels/CRUDModel.dart';
+import 'package:rialto/viewmodels/contact_crud.dart';
 // import 'package:rialto/pages/front/front_page.dart';
 // import 'package:rialto/pages/front/signup_authentication.dart';
 
