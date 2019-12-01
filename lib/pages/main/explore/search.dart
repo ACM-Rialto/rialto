@@ -27,7 +27,7 @@ class DataSearch extends SearchDelegate<String> {
     );
   }
 
-  final recentProds = ["Camera", "Thing1", "Thing2"];
+  final recentProds = ["Pokemon", "Watch", "Gucci"];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -78,7 +78,10 @@ class DataSearch extends SearchDelegate<String> {
         return ListView.builder(
           itemBuilder: (context, index) =>
               ListTile(
-                onTap: () => showResults(context),
+                onTap: () {
+                  query = suggestionsList[index];
+                  showResults(context);
+                },
                 leading: Icon(Icons.search),
                 title: Text(suggestionsList[index]),
               ),
