@@ -69,7 +69,10 @@ class _ExplorePageState extends State<ExplorePage>
                   .accentColor,
             ),
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
+              showSearch(
+                context: context,
+                delegate: DataSearch(),
+              );
             },
           ),
         ],
@@ -156,7 +159,7 @@ class _ExplorePageState extends State<ExplorePage>
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
-          type: documentSnapshot.data['type'],
+          category: documentSnapshot.data['category'],
         ));
       });
       products.shuffle();

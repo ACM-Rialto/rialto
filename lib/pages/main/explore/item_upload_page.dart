@@ -19,8 +19,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
   String _itemName;
   String _itemDescription;
   double _itemPrice;
-  String _itemType;
-  String _category = "Electronics";
+  String _category = "Choose Category";
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         'image': await storageReference.getDownloadURL(),
         'interested_users': [],
         'names_for_email': new Map(),
-        'type': _itemType,
+        'category': _category,
       });
     });
   }
@@ -126,14 +125,14 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                         value: _category,
                         hint: Text("Item Category"),
                         items: <String>[
-                          "Electronics",
-                          "Men's Fashion",
-                          "Women's Fashion",
+                          "Choose Category"
+                              "Tech",
+                          "Clothes",
                           "Shoes",
                           "Watches",
                           "Jewelry",
                           "Sunglasses",
-                          "Home Appliances"
+                          "Home"
                         ].map<DropdownMenuItem<String>>(
                               (String value) {
                             return DropdownMenuItem<String>(

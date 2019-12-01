@@ -5,8 +5,10 @@ import 'package:rialto/pages/main/explore/products_view.dart';
 
 class DataSearch extends SearchDelegate<String> {
   final Firestore firestore = Firestore.instance;
-
   final List prods = new List();
+  final String category;
+
+  DataSearch({this.category});
 
   void initState() {
     CollectionReference itemsReference = firestore.collection('items');
@@ -108,10 +110,10 @@ class DataSearch extends SearchDelegate<String> {
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
-          type: documentSnapshot.data['type'],
+          category: documentSnapshot.data['category'],
         ));
       });
+      state.setState(() {});
     });
-    state.setState(() {});
   }
 }

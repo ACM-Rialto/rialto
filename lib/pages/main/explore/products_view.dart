@@ -15,7 +15,7 @@ class ProductsView extends StatefulWidget {
   final bool refreshable;
 
   ProductsView({@required this.populateProductsFromFirebase,
-    this.refreshable,
+    @required this.refreshable,
     this.refreshTrigger});
 
   ProductsViewState createState() => ProductsViewState();

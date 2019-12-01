@@ -15,15 +15,11 @@ class HorizontalList extends StatelessWidget {
         children: <Widget>[
           Category(
             imageLocation: 'assets/category/electronics.png',
-            imageCaption: 'Electronics',
+            imageCaption: 'Tech',
           ),
           Category(
             imageLocation: 'assets/category/manfashion.png',
-            imageCaption: 'Men\'s Fashion',
-          ),
-          Category(
-            imageLocation: 'assets/category/womenfashion.png',
-            imageCaption: 'Women\'s Fashion',
+            imageCaption: 'Clothes',
           ),
           Category(
             imageLocation: 'assets/category/shoes.png',
@@ -43,7 +39,7 @@ class HorizontalList extends StatelessWidget {
           ),
           Category(
             imageLocation: 'assets/category/homeappliances.png',
-            imageCaption: 'Home Appliances',
+            imageCaption: 'Home',
           ),
         ],
       ),
@@ -65,7 +61,8 @@ class Category extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProductCat(category: this.imageCaption)),
+            MaterialPageRoute(builder: (context) =>
+                ProductCategoryPage(category: this.imageCaption)),
           );
         },
         child: Container(
