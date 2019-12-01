@@ -49,10 +49,6 @@ class _CartPageState extends State<CartPage> {
               );
             },
           ),
-          IconButton(
-            icon: Icon(Icons.shopping_basket, color: Colors.white),
-            onPressed: null,
-          ),
         ],
       ),
       body: Center(

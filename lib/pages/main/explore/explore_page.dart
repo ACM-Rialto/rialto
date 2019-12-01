@@ -72,10 +72,6 @@ class _ExplorePageState extends State<ExplorePage>
               showSearch(context: context, delegate: DataSearch());
             },
           ),
-          IconButton(
-            icon: Icon(Icons.shopping_basket, color: Colors.white),
-            onPressed: null,
-          ),
         ],
       ),
       body: RefreshIndicator(
