@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class GeneratedCodeView extends StatelessWidget {
-  final String buyer;
-  final String seller;
   final Map<String, String> data;
 
-  GeneratedCodeView({@required this.buyer, @required this.seller})
+  GeneratedCodeView(
+      {@required String buyer, @required String seller, @required String itemId})
       : data = new Map() {
     data['buyer'] = buyer;
     data['seller'] = seller;
+    data['item'] = itemId;
   }
 
   @override

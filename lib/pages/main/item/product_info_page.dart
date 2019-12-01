@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +26,40 @@ class ProductInformationPage extends StatelessWidget {
         backgroundColor: Theme
             .of(context)
             .primaryColor,
+        actions: <Widget>[
+          product.sellerEmail != user.firebaseUser.email
+              ? IconButton(
+            icon: Icon(Icons.crop_free),
+            color: Theme
+                .of(context)
+                .accentColor,
+            onPressed: () async {
+              String qrResultRaw = await BarcodeScanner.scan();
+              Map result = json.decode(qrResultRaw);
+              print(qrResultRaw);
+              if (result['buyer'] == user.firebaseUser.email &&
+                  result['seller'] == product.sellerEmail &&
+                  result['item'] == product.documentId) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "The buyer is the same as the QR code!",
+                    ),
+                  ),
+                );
+              } else {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Invalid QR code!",
+                    ),
+                  ),
+                );
+              }
+            },
+          )
+              : Container(),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
