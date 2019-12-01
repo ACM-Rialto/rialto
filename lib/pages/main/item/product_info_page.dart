@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
@@ -15,77 +16,112 @@ class ProductInformationPage extends StatelessWidget {
             .of(context)
             .primaryColor,
       ),
-      body: Container(
-        padding: EdgeInsets.all(12.0),
-        alignment: Alignment.centerLeft,
-        child: ListView(
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
           children: <Widget>[
             Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.5,
               width: MediaQuery
                   .of(context)
                   .size
-                  .width,
-              child: new CachedNetworkImage(
-                imageUrl: product.image,
-                placeholder: (context, url) =>
-                    CircularProgressIndicator(
-                        valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.redAccent)),
-                errorWidget: (context, url, error) =>
-                    Image.asset("assets/images/logo.png"),
-                fit: BoxFit.contain,
+                  .width * 0.5,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.075,
+              child: FlatButton(
+                child: Text(
+                  "Contact",
+                  style: TextStyle(
+                    color: Theme
+                        .of(context)
+                        .accentColor,
+                  ),
+                ),
+                onPressed: () {},
+                color: Colors.grey.shade800,
               ),
             ),
-            Text(
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.5,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.075,
+              child: FlatButton(
+                child: Text(
+                  "Mark Interested",
+                  style: TextStyle(
+                    color: Theme
+                        .of(context)
+                        .accentColor,
+                  ),
+                ),
+                onPressed: () {},
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        alignment: Alignment.centerLeft,
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: new CachedNetworkImage(
+                  imageUrl: product.image,
+                  placeholder: (context, url) =>
+                      CircularProgressIndicator(
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.redAccent)),
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/images/logo.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            AutoSizeText(
               "${product.name}",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black87,
               ),
-              textAlign: TextAlign.center,
+              maxLines: 2,
             ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Price: \$${product.price}",
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                "Price: \$${product.price}",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
-                new FlatButton(
-                  color: Colors.white,
-                  onPressed: () {},
-                  child: Text(
-                    "Contact",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.redAccent),
-                  ),
-                ),
-              ],
+              ),
             ),
-            new Card(
-              child: new Container(
-                padding: new EdgeInsets.all(32.0),
-                child: new Column(
-                  children: <Widget>[
-                    Text(
-                      '${product.description}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
+            Text(
+              '${product.description}',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
               ),
             ),
           ],
