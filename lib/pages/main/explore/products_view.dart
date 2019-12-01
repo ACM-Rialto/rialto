@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
-import 'package:rialto/utils/text_utilities.dart';
 import 'package:rialto/pages/main/item/product_info_page.dart';
+import 'package:rialto/utils/text_utilities.dart';
 
 class ProductsView extends StatefulWidget {
   final Firestore firestore = Firestore.instance;
   final Stream refreshTrigger;
+  final Function(List<Product>, State) populateProductsFromFirebase;
+  final bool refreshable;
 
-  ProductsView({this.refreshTrigger});
+  ProductsView({@required this.populateProductsFromFirebase,
+    this.refreshable,
+    this.refreshTrigger});
 
   ProductsViewState createState() => ProductsViewState();
 }
@@ -27,7 +31,10 @@ class ProductsViewState extends State<ProductsView> {
   void initState() {
     super.initState();
     refreshProducts();
-    streamSubscription = widget.refreshTrigger.listen((_) => refreshProducts());
+    if (widget.refreshable) {
+      streamSubscription =
+          widget.refreshTrigger.listen((_) => refreshProducts());
+    }
   }
 
   @override
@@ -42,23 +49,7 @@ class ProductsViewState extends State<ProductsView> {
   }
 
   void refreshProducts() {
-    _products.clear();
-    CollectionReference itemsReference = widget.firestore.collection('items');
-    itemsReference.snapshots().forEach((snapshot) {
-      snapshot.documents.forEach((documentSnapshot) {
-        _products.add(new Product(
-          name: documentSnapshot.data['name'],
-          price: double.parse("${documentSnapshot.data['price']}"),
-          documentId: documentSnapshot.reference.documentID,
-          description: documentSnapshot.data['description'],
-          image: documentSnapshot.data['image'],
-          sellerEmail: documentSnapshot.data['seller'],
-          type: documentSnapshot.data['type'],
-        ));
-      });
-      _products.shuffle();
-      setState(() {});
-    });
+    widget.populateProductsFromFirebase(_products, this);
   }
 
   @override
@@ -83,7 +74,9 @@ class ProductsViewState extends State<ProductsView> {
   @override
   void dispose() {
     super.dispose();
-    streamSubscription.cancel();
+    if (streamSubscription != null) {
+      streamSubscription.cancel();
+    }
   }
 }
 
@@ -102,7 +95,8 @@ class _SingleProductView extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProductInfo(prod: this._product)),
+                MaterialPageRoute(
+                    builder: (context) => ProductInfo(prod: this._product)),
               );
             },
             child: Column(

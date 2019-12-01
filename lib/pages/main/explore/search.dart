@@ -1,11 +1,9 @@
-
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:rialto/data/product.dart';
+import 'package:flutter/material.dart';
+import 'package:rialto/data/product.dart';
+import 'package:rialto/pages/main/explore/products_view.dart';
 
-
-class DataSearch extends SearchDelegate<String>
-{
+class DataSearch extends SearchDelegate<String> {
   final Firestore firestore = Firestore.instance;
 
   final List prods = new List();
@@ -14,28 +12,31 @@ class DataSearch extends SearchDelegate<String>
     CollectionReference itemsReference = firestore.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {
-        prods.add(documentSnapshot.data['name'],
+        prods.add(
+          documentSnapshot.data['name'],
         );
       });
     });
   }
 
-  
-    final recentProds = [
-      "Camera",
-      "Thing1",
-      "Thing2"
-    ];
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      primaryTextTheme: Typography(platform: TargetPlatform.android).white,
+      textTheme: Typography(platform: TargetPlatform.android).white,
+    );
+  }
+
+  final recentProds = ["Camera", "Thing1", "Thing2"];
 
   @override
-  List<Widget> buildActions(BuildContext context) 
-  {
+  List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
           query = "";
-         },
+        },
       ),
     ];
   }
@@ -48,42 +49,66 @@ class DataSearch extends SearchDelegate<String>
         progress: transitionAnimation,
       ),
       onPressed: () {
-        close(context,null);
-      }
+        close(context, null);
+      },
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 100,
-        width: 100,
-        child: Card(
-          color: Colors.lightGreen,
-          child: Center(
-            child:Text(query),
-          ),
-          ),
-          ),
-          );
+    return ProductsView(
+      populateProductsFromFirebase: populateProductsFromFirebase,
+      refreshable: false,
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-    ? recentProds
-    : prods.where((p) => p.startsWith(query)).toList();
+    return StreamBuilder(
+      stream: getFirestoreQuery().snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        var suggestionsList;
+        if (!snapshot.hasData || query == '') {
+          suggestionsList = recentProds;
+        } else {
+          suggestionsList = snapshot.data.documents
+              .map<String>((snapshot) => snapshot.data['name'])
+              .toList();
+        }
+        return ListView.builder(
+          itemBuilder: (context, index) =>
+              ListTile(
+                onTap: () => showResults(context),
+                leading: Icon(Icons.search),
+                title: Text(suggestionsList[index]),
+              ),
+          itemCount: suggestionsList.length,
+        );
+      },
+    );
+  }
 
-    return ListView.builder(
-      itemBuilder: (context,index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.search),
-        title: Text(suggestionList[index]),
-        ),
-        itemCount: suggestionList.length,
-      );   
+  Query getFirestoreQuery() {
+    return Firestore.instance
+        .collection('items')
+        .where('name', isGreaterThanOrEqualTo: query);
+  }
+
+  void populateProductsFromFirebase(List<Product> products, State state) {
+    products.clear();
+    getFirestoreQuery().snapshots().forEach((snapshot) {
+      snapshot.documents.forEach((documentSnapshot) {
+        products.add(new Product(
+          name: documentSnapshot.data['name'],
+          price: double.parse("${documentSnapshot.data['price']}"),
+          documentId: documentSnapshot.reference.documentID,
+          description: documentSnapshot.data['description'],
+          image: documentSnapshot.data['image'],
+          sellerEmail: documentSnapshot.data['seller'],
+          type: documentSnapshot.data['type'],
+        ));
+      });
+    });
+    state.setState(() {});
   }
 }
