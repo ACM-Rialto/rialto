@@ -17,6 +17,8 @@ class ExplorePage extends StatefulWidget implements NavigationPage {
 
 class _ExplorePageState extends State<ExplorePage>
     with AutomaticKeepAliveClientMixin<ExplorePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
   final refreshNotifier = new StreamController.broadcast();
 
   @override
@@ -76,61 +78,72 @@ class _ExplorePageState extends State<ExplorePage>
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 5.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              left: 8.0,
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: () async {
+          return setState(() {
+            refreshNotifier.sink.add(null);
+          });
+        },
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 5.0,
             ),
-            child: Text(
-              'Popular Categories',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                left: 8.0,
+              ),
+              child: Text(
+                'Popular Categories',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.black),
+              ),
             ),
-          ),
-          HorizontalList(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.2,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              left: 8.0,
+            HorizontalList(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.2,
             ),
-            child: Text(
-              'Popular Products',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                left: 8.0,
+              ),
+              child: Text(
+                'Popular Products',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.black),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 15.0,
-              left: 8.0,
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 15.0,
+                left: 8.0,
+              ),
             ),
-          ),
-          Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.5,
-            child: ProductsView(
-              populateProductsFromFirebase: populateProductsFromFirebase,
-              refreshable: true,
-              refreshTrigger: refreshNotifier.stream,
-            ),
-          )
-        ],
+            Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.5,
+              child: ProductsView(
+                populateProductsFromFirebase: populateProductsFromFirebase,
+                refreshable: true,
+                refreshTrigger: refreshNotifier.stream,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

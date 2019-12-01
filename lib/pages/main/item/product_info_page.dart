@@ -120,8 +120,8 @@ class ProductInformationPage extends StatelessWidget {
             AutoSizeText(
               "${product.name}",
               style: TextStyle(
-                fontSize: 20,
-                color: Colors.black87,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
               ),
               maxLines: 2,
             ),
