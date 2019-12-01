@@ -143,7 +143,7 @@ class _ProfilePageState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '$_transactions Transactions',
+                              '$_transactions products sold',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
