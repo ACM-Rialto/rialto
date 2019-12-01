@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
 import 'package:rialto/pages/review_page/reviewPageArguments.dart';
 import 'package:rialto/viewmodels/review_crud.dart';
@@ -11,7 +12,8 @@ class ReviewPage extends StatefulWidget implements NavigationPage {
 
   // ContactPage({@required this.contact});
 
-  ReviewPage();
+  final RialtoUser user;
+  ReviewPage(this.user, {Key key}) : super(key: key);
 
   @override
   _ReviewPageState createState() => _ReviewPageState();

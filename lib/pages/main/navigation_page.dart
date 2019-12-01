@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:rialto/pages/cart/cart.dart';
+import 'package:rialto/data/rialto_user.dart';
+import 'package:rialto/pages/main/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
+<<<<<<< HEAD
 import 'package:rialto/pages/main/explore/filler_page.dart';
 import 'package:rialto/pages/review_page/review_page.dart';
+=======
+import 'package:rialto/pages/main/profile.dart';
+>>>>>>> d4043eed8a11fe0cf2ed99eb989a9134b0d09c8c
 
 class NavigationPageViewer extends StatefulWidget {
+  final RialtoUser rialtoUser;
+
+  NavigationPageViewer(this.rialtoUser);
+
   State<StatefulWidget> createState() {
     return _NavigationPageViewerState();
   }
@@ -12,20 +21,30 @@ class NavigationPageViewer extends StatefulWidget {
 
 class _NavigationPageViewerState extends State<NavigationPageViewer> {
   int _currentIndex = 0;
-  final List<NavigationPage> _children = [
-    HomePage(),
-    // ContactPage(),
-    CartPage(),
-    // FillerNavigationPageText('CART'),
-    FillerNavigationPageText('PROFILE'),
-    ReviewPage(),
-  ];
+  List<NavigationPage> _children;
+  final _pageController = PageController();
+
+  void initState() {
+    super.initState();
+    _children = [
+      ExplorePage(widget.rialtoUser),
+      CartPage(widget.rialtoUser),
+      Profile(widget.rialtoUser),
+      ReviewPage(widget.rialtoUser),
+    ];
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: PageView(
+        children: _children,
+        controller: _pageController,
+        onPageChanged: onTabTapped,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
+        onTap: (index) {
+          _pageController.jumpToPage(index);
+        },
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
@@ -49,6 +68,7 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
     );
   }
 
+<<<<<<< HEAD
   Widget buildRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,6 +81,8 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
     );
   }
 
+=======
+>>>>>>> d4043eed8a11fe0cf2ed99eb989a9134b0d09c8c
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;

@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:rialto/pages/contact/contactModel.dart';
+import 'package:rialto/pages/contact/contact_model.dart';
+
 import '../locator.dart';
 import '../services/api.dart';
-// import '../models/productModel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContactCRUD extends ChangeNotifier {
   Api _api = locator<Api>();

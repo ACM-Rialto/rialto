@@ -332,6 +332,7 @@ class _signupPageState extends State<signupPage> {
     usersCollection.document(_email).setData({
       'first_name': _firstName,
       'last_name': _lastName,
+      'email': _email,
       'reputation': 0,
     });
   }

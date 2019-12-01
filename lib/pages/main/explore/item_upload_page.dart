@@ -4,8 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rialto/data/rialto_user.dart';
 
 class ItemUploadPage extends StatefulWidget {
+  final RialtoUser user;
+
+  ItemUploadPage(this.user);
+
   @override
   State<StatefulWidget> createState() {
     return new ItemUploadPageState();
@@ -15,10 +20,21 @@ class ItemUploadPage extends StatefulWidget {
 class ItemUploadPageState extends State<ItemUploadPage> {
   static final _formKey = GlobalKey<FormState>();
   final List<File> _imageFiles = new List();
+  static final _categories = [
+    "Choose Category",
+    "Tech",
+    "Clothes",
+    "Shoes",
+    "Watches",
+    "Jewelry",
+    "Sunglasses",
+    "Home"
+  ];
 
   String _itemName;
   String _itemDescription;
   double _itemPrice;
+  String _category = _categories[0];
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +69,11 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         'name': _itemName,
         'description': _itemDescription,
         'price': _itemPrice,
-        'seller': 'a@utdallas.edu',
+        'seller': widget.user.firebaseUser.email,
         'image': await storageReference.getDownloadURL(),
         'interested_users': [],
         'names_for_email': new Map(),
+        'category': _category,
       });
     });
   }
@@ -100,6 +117,42 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                     onSaved: (value) {
                       _itemName = value;
                     },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _category,
+                        items: _categories.map<DropdownMenuItem<String>>(
+                              (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _category = newValue;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -213,7 +266,9 @@ class ItemUploadPageState extends State<ItemUploadPage> {
           border: Border.all(),
           color: _imageFiles.length == 0
               ? Theme.of(context).primaryColor
-              : Colors.white,
+              : Theme
+              .of(context)
+              .accentColor,
         ),
         child: _imageFiles.length == 0
             ? Center(

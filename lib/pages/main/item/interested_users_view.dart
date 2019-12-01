@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/qr/generate_code_page.dart';
 
 class InterestedUsersView extends StatefulWidget {
   final DocumentSnapshot productDocument;
+  final RialtoUser sellerUser;
 
-  InterestedUsersView(this.productDocument);
+  InterestedUsersView(this.sellerUser, this.productDocument);
 
   @override
   State<StatefulWidget> createState() {
@@ -109,7 +111,7 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
     return AlertDialog(
       backgroundColor: Colors.white,
       content: new GeneratedCodeView(
-        seller: 'a@utdallas.edu',
+        seller: widget.sellerUser.firebaseUser.email,
         buyer: emails[index],
       ),
     );
