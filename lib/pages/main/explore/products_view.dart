@@ -68,6 +68,9 @@ class ProductsViewState extends State<ProductsView> {
                 .height / 1),
       ),
       itemBuilder: (BuildContext context, int index) {
+        if (_products[index].documentId == "ErmndHHDoZx5uFPt1Nid") {
+          return null;
+        }
         return InkWell(
             onTap: () {
               Navigator.push(

@@ -184,18 +184,16 @@ class _ExplorePageState extends State<ExplorePage>
     CollectionReference itemsReference = Firestore.instance.collection('items');
     itemsReference.snapshots().forEach((snapshot) {
       snapshot.documents.forEach((documentSnapshot) {
-        if (documentSnapshot.documentID != "ErmndHHDoZx5uFPt1Nid") {
-          products.add(new Product(
-            name: documentSnapshot.data['name'],
-            price: double.parse("${documentSnapshot.data['price']}"),
-            documentId: documentSnapshot.reference.documentID,
-            description: documentSnapshot.data['description'],
-            image: documentSnapshot.data['image'],
-            imageCount: documentSnapshot.data['image_count'],
-            sellerEmail: documentSnapshot.data['seller'],
-            category: documentSnapshot.data['category'],
-          ));
-        }
+        products.add(new Product(
+          name: documentSnapshot.data['name'],
+          price: double.parse("${documentSnapshot.data['price']}"),
+          documentId: documentSnapshot.reference.documentID,
+          description: documentSnapshot.data['description'],
+          image: documentSnapshot.data['image'],
+          imageCount: documentSnapshot.data['image_count'],
+          sellerEmail: documentSnapshot.data['seller'],
+          category: documentSnapshot.data['category'],
+        ));
       });
       products.shuffle();
       state.setState(() {});
