@@ -30,12 +30,12 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
   void initState() {
     super.initState();
 
-    var userQuery = Firestore.instance
-          .collection('users')
-          // .document(widget.data['seller'])
-          .where('email', isEqualTo: widget.data['seller'])
-          .where('transaction_started', isEqualTo: true)
-          .limit(1);
+    // var userQuery = Firestore.instance
+    //       .collection('users')
+    //       // .document(widget.data['seller'])
+    //       .where('email', isEqualTo: widget.data['seller'])
+    //       .where('transaction_started', isEqualTo: true)
+    //       .limit(1);
 
     // await userQuery.getDocuments().then((data) {
     // userQuery.getDocuments().then((data) {
@@ -91,6 +91,23 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
     //       // seller: widget.data['seller']
     //       // buyer: widget.data['buyer']
         // });
+    Firestore.instance
+        .collection('users')
+        .where('email', isEqualTo: widget.data['seller'])
+        .limit(1)
+        .snapshots()
+        .listen((event) {
+      event.documentChanges.forEach(
+            (change) {
+          if (change.type == DocumentChangeType.modified) {
+            // Navigator.pop(context);
+            // todo show review page for seller, do a pop (as shown above), then pushReplacement
+            // seller: widget.data['seller']
+            // buyer: widget.data['buyer']
+          }
+        },
+      );
+    });
   }
 
   // void showInSnackBar(String value) {
