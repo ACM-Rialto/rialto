@@ -79,7 +79,6 @@ flutter:
     - assets/slider/slider3.jpg
     - assets/slider/slider4.jpg
     - assets/slider/slider5.jpg
-    - assets/slider/slider6.jpg
     - assets/profile/blank.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

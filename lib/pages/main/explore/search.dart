@@ -120,6 +120,7 @@ class DataSearch extends SearchDelegate<String> {
           documentId: documentSnapshot.reference.documentID,
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
+          imageCount: documentSnapshot.data['image_count'],
           sellerEmail: documentSnapshot.data['seller'],
           category: documentSnapshot.data['category'],
         ));

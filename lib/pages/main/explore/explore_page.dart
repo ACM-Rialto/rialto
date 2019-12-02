@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
@@ -23,6 +24,27 @@ class _ExplorePageState extends State<ExplorePage>
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
   final refreshNotifier = new StreamController.broadcast();
+
+  final Widget imageCarousel = Container(
+    height: 225.0,
+    child: Carousel(
+      overlayShadow: false,
+      borderRadius: true,
+      boxFit: BoxFit.contain,
+      autoplay: true,
+      dotSize: 5.0,
+      indicatorBgPadding: 9.0,
+      images: [
+        new AssetImage('assets/slider/slider1.jpg'),
+        new AssetImage('assets/slider/slider2.jpg'),
+        new AssetImage('assets/slider/slider3.jpg'),
+        new AssetImage('assets/slider/slider4.jpg'),
+        new AssetImage('assets/slider/slider5.jpg'),
+      ],
+      animationCurve: Curves.fastOutSlowIn,
+      animationDuration: Duration(microseconds: 1500),
+    ),
+  );
 
   @override
   void initState() {
@@ -99,6 +121,7 @@ class _ExplorePageState extends State<ExplorePage>
             SizedBox(
               height: 5.0,
             ),
+            imageCarousel,
             Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
@@ -167,6 +190,7 @@ class _ExplorePageState extends State<ExplorePage>
           documentId: documentSnapshot.reference.documentID,
           description: documentSnapshot.data['description'],
           image: documentSnapshot.data['image'],
+          imageCount: documentSnapshot.data['image_count'],
           sellerEmail: documentSnapshot.data['seller'],
           category: documentSnapshot.data['category'],
         ));
