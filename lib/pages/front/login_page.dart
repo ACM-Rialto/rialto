@@ -205,9 +205,9 @@ class LoginPageState extends State<LoginPage> {
 
 class Logo extends StatefulWidget {
   final logoAnimationTween = MultiTrackTween([
-    Track("rotation").add(Duration(seconds: 2), Tween(begin: 0.0, end: 2 * pi),
+    Track("rotation").add(Duration(seconds: 1), Tween(begin: 0.0, end: 2 * pi),
         curve: Curves.easeOutSine),
-    Track("size").add(Duration(seconds: 2), Tween(begin: 0.0, end: 150.0)),
+    Track("size").add(Duration(seconds: 1), Tween(begin: 0.0, end: 150.0)),
   ]);
 
   @override
