@@ -33,14 +33,14 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
         .snapshots()
         .listen((event) {
           showInSnackBar(widget.data['seller']);
-          Navigator.pop(context);
-          Navigator.of(context).pushReplacement(
-            new MaterialPageRoute(
-              builder: (context) {
-                // return ReviewPage(widget.data['seller']);
-              },
-            )
-          );
+          // Navigator.pop(context);
+          // Navigator.of(context).pushReplacement(
+          //   new MaterialPageRoute(
+          //     builder: (context) {
+          //       // return ReviewPage(widget.data['seller']);
+          //     },
+          //   )
+          // );
           // todo show review page for seller, do a pop (as shown above), then pushReplacement
           // seller: widget.data['seller']
           // buyer: widget.data['buyer']
