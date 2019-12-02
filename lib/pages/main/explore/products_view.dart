@@ -117,32 +117,6 @@ class _SingleProductView extends StatelessWidget {
         elevation: 6.0,
         child: Stack(
           children: <Widget>[
-            isVerified != null && isVerified
-                ? Padding(
-              padding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.check_circle,
-                    color: Theme
-                        .of(context)
-                        .primaryColor,
-                  ),
-                  AutoSizeText(
-                    " Verified Location",
-                    style: TextStyle(
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            )
-                : Container(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
@@ -184,6 +158,32 @@ class _SingleProductView extends StatelessWidget {
                 ),
               ],
             ),
+            isVerified != null && isVerified
+                ? Padding(
+              padding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.check_circle,
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
+                  ),
+                  AutoSizeText(
+                    " Verified Location",
+                    style: TextStyle(
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            )
+                : Container(),
           ],
         ),
       ),
