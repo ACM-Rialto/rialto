@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/data/rialto_user.dart';
@@ -123,16 +125,7 @@ class ProductInformationPage extends StatelessWidget {
                     .of(context)
                     .size
                     .width,
-                child: new CachedNetworkImage(
-                  imageUrl: product.image,
-                  placeholder: (context, url) =>
-                      CircularProgressIndicator(
-                          valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.redAccent)),
-                  errorWidget: (context, url, error) =>
-                      Image.asset("assets/images/logo.png"),
-                  fit: BoxFit.contain,
-                ),
+                child: _ProductImages(product),
               ),
             ),
             AutoSizeText(
@@ -228,5 +221,62 @@ class ProductInformationPage extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class _ProductImages extends StatefulWidget {
+  Product _product;
+
+  _ProductImages(this._product);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ProductImagesState();
+  }
+}
+
+class _ProductImagesState extends State<_ProductImages> {
+  var _images = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _images = [_createImage(widget._product.image)];
+    for (int i = 1; i < widget._product.imageCount; i++) {
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('images/${widget._product.documentId}/$i');
+      storageReference.getDownloadURL().then((value) {
+        _images.add(_createImage(value));
+        setState(() {});
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Carousel(
+      overlayShadow: false,
+      borderRadius: true,
+      boxFit: BoxFit.contain,
+      autoplay: false,
+      dotSize: 5.0,
+      indicatorBgPadding: 9.0,
+      images: _images,
+      animationCurve: Curves.fastOutSlowIn,
+      animationDuration: Duration(microseconds: 1500),
+    );
+  }
+
+  Widget _createImage(String imageUrl) {
+    return new CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) =>
+          CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent)),
+      errorWidget: (context, url, error) =>
+          Image.asset("assets/images/logo.png"),
+      fit: BoxFit.contain,
+    );
   }
 }

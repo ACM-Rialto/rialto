@@ -8,6 +8,7 @@ class Product {
   String sellerEmail;
   String documentId;
   String category;
+  int imageCount;
 
   Product(
       {@required this.name,
@@ -15,6 +16,7 @@ class Product {
         @required this.documentId,
       this.description,
       @required this.image,
+        @required this.imageCount,
       @required this.sellerEmail,
         @required this.category});
 }

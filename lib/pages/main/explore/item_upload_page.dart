@@ -58,23 +58,29 @@ class ItemUploadPageState extends State<ItemUploadPage> {
   Future<void> createRecord(Firestore databaseReference) async {
     DocumentReference document =
     databaseReference.collection("items").document();
-    int pictureIndex = 0;
-    _imageFiles.forEach((file) async {
-      StorageReference storageReference = FirebaseStorage.instance.ref().child(
-          'images/${document.documentID}/${file.toString()}-$pictureIndex}');
-      StorageUploadTask uploadTask = storageReference.putFile(file);
+    String imageLocation;
+    for (var pictureIndex = 0; pictureIndex <
+        _imageFiles.length; pictureIndex++) {
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('images/${document.documentID}/$pictureIndex');
+      StorageUploadTask uploadTask =
+      storageReference.putFile(_imageFiles[pictureIndex]);
       await uploadTask.onComplete;
-      pictureIndex++;
-      await document.setData({
-        'name': _itemName,
-        'description': _itemDescription,
-        'price': _itemPrice,
-        'seller': widget.user.firebaseUser.email,
-        'image': await storageReference.getDownloadURL(),
-        'interested_users': [],
-        'names_for_email': new Map(),
-        'category': _category,
-      });
+      if (imageLocation == null) {
+        imageLocation = await storageReference.getDownloadURL();
+      }
+    }
+    await document.setData({
+      'name': _itemName,
+      'description': _itemDescription,
+      'price': _itemPrice,
+      'seller': widget.user.firebaseUser.email,
+      'image': imageLocation,
+      'image_count': _imageFiles.length,
+      'interested_users': [],
+      'names_for_email': new Map(),
+      'category': _category,
     });
   }
 
