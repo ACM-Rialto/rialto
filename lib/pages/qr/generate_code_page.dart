@@ -29,13 +29,20 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
     super.initState();
     Firestore.instance
         .collection('users')
-        .document(widget.data['seller'])
+        .where('email', isEqualTo: widget.data['seller'])
+        .limit(1)
         .snapshots()
         .listen((event) {
-      // Navigator.pop(context);
-      // todo show review page for seller, do a pop (as shown above), then pushReplacement
-      // seller: widget.data['seller']
-      // buyer: widget.data['buyer']
+      event.documentChanges.forEach(
+            (change) {
+          if (change.type == DocumentChangeType.modified) {
+            // Navigator.pop(context);
+            // todo show review page for seller, do a pop (as shown above), then pushReplacement
+            // seller: widget.data['seller']
+            // buyer: widget.data['buyer']
+          }
+        },
+      );
     });
   }
 
