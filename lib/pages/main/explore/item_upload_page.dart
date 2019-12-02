@@ -1,10 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rialto/data/rialto_user.dart';
+import 'package:rialto/utils/map.dart';
 
 class ItemUploadPage extends StatefulWidget {
   final RialtoUser user;
@@ -19,6 +23,7 @@ class ItemUploadPage extends StatefulWidget {
 
 class ItemUploadPageState extends State<ItemUploadPage> {
   static final _formKey = GlobalKey<FormState>();
+  final _mapKey = GlobalKey<MapWithCenterPinState>();
   final List<File> _imageFiles = new List();
   static final _categories = [
     "Choose Category",
@@ -59,11 +64,9 @@ class ItemUploadPageState extends State<ItemUploadPage> {
     DocumentReference document =
     databaseReference.collection("items").document();
     String imageLocation;
-    for (var pictureIndex = 0; pictureIndex <
-        _imageFiles.length; pictureIndex++) {
-      StorageReference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('images/${document.documentID}/$pictureIndex');
+    for (var pictureIndex = 0; pictureIndex < _imageFiles.length; pictureIndex++) {
+      StorageReference storageReference = FirebaseStorage.instance.ref().child(
+          'images/${document.documentID}/$pictureIndex');
       StorageUploadTask uploadTask =
       storageReference.putFile(_imageFiles[pictureIndex]);
       await uploadTask.onComplete;
@@ -71,6 +74,9 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         imageLocation = await storageReference.getDownloadURL();
       }
     }
+    LatLng currentLagLng = _mapKey.currentState.currentLatLng;
+    GeoPoint geoPoint =
+    new GeoPoint(currentLagLng.latitude, currentLagLng.longitude);
     await document.setData({
       'name': _itemName,
       'description': _itemDescription,
@@ -81,6 +87,8 @@ class ItemUploadPageState extends State<ItemUploadPage> {
       'interested_users': [],
       'names_for_email': new Map(),
       'category': _category,
+      'location': geoPoint,
+      'verified': _mapKey.currentState.verified,
     });
   }
 
@@ -221,6 +229,30 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                 SizedBox(
                   height: 10,
                 ),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AutoSizeText(
+                        "Where would you like to meet?",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    MapWithCenterPin(
+                      key: _mapKey,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.3,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      zoom: 14.0,
+                    ),
+                  ],
+                ),
                 Center(
                   child: RaisedButton(
                     color: Theme
@@ -235,11 +267,20 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                       ),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                      await _mapKey.currentState.updateVerificationStatus();
+                      if (_mapKey.currentState.verified) {
+                        _uploadItem(databaseReference);
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return _ConfirmationDialogue(
+                              databaseReference,
+                              _uploadItem,
+                            );
+                          },
+                        );
                       }
-                      await createRecord(databaseReference);
-                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -249,6 +290,14 @@ class ItemUploadPageState extends State<ItemUploadPage> {
         ),
       ),
     );
+  }
+
+  Future _uploadItem(Firestore firestore) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+    }
+    await createRecord(firestore);
+    Navigator.pop(context);
   }
 
   Future getImageFromGallery() async {
@@ -287,58 +336,106 @@ class ItemUploadPageState extends State<ItemUploadPage> {
           ),
         )
             : ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _imageFiles.length + 1,
-            itemBuilder: (BuildContext context, int index) {
-              var child;
-              if (index == _imageFiles.length) {
-                child = GestureDetector(
-                  onTap: getImageFromGallery,
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      child: Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width * 0.2,
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.2,
+          scrollDirection: Axis.horizontal,
+          itemCount: _imageFiles.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            var child;
+            if (index == _imageFiles.length) {
+              child = GestureDetector(
+                onTap: getImageFromGallery,
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                    child: Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.2,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.2,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
+                      child: Icon(
+                        Icons.add,
                         color: Theme
                             .of(context)
-                            .primaryColor,
-                        child: Icon(
-                          Icons.add,
-                          color: Theme
-                              .of(context)
-                              .accentColor,
-                          size: 72,
-                        ),
+                            .accentColor,
+                        size: 72,
                       ),
                     ),
                   ),
-                );
-              } else {
-                child = Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.3,
-                  child: Center(
-                    child: Image.file(_imageFiles[index]),
-                  ),
-                );
-              }
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: child,
+                ),
               );
-            }),
+            } else {
+              child = Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.3,
+                child: Center(
+                  child: Image.file(_imageFiles[index]),
+                ),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: child,
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class _ConfirmationDialogue extends StatelessWidget {
+  final uploadItem;
+  final firestore;
+
+  _ConfirmationDialogue(this.firestore, this.uploadItem);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Are you sure you wish to upload?"),
+      content: Text(
+          "The location you have inputted is not a verified location. This "
+              "decreases the likeliness somebody will by from you. If you "
+              "wish to be verified, select a location at an educational institute."),
+      actions: <Widget>[
+        FlatButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(
+              color: Theme
+                  .of(context)
+                  .primaryColor,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            uploadItem(firestore);
+          },
+        ),
+        FlatButton(
+          child: Text(
+            "No",
+            style: TextStyle(
+              color: Theme
+                  .of(context)
+                  .primaryColor,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
     );
   }
 }

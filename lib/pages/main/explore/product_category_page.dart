@@ -79,6 +79,8 @@ class ProductCategoryPage extends StatelessWidget {
           imageCount: documentSnapshot.data['image_count'],
           sellerEmail: documentSnapshot.data['seller'],
           category: documentSnapshot.data['category'],
+          location: documentSnapshot.data['location'],
+          verified: documentSnapshot.data['verified'],
         ));
       });
       state.setState(() {});

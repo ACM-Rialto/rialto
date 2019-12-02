@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Product {
@@ -9,14 +10,19 @@ class Product {
   String documentId;
   String category;
   int imageCount;
+  GeoPoint location;
+  bool verified;
 
-  Product(
-      {@required this.name,
-      @required this.price,
-        @required this.documentId,
-      this.description,
-      @required this.image,
-        @required this.imageCount,
-      @required this.sellerEmail,
-        @required this.category});
+  Product({
+    @required this.name,
+    @required this.price,
+    @required this.documentId,
+    @required this.description,
+    @required this.image,
+    @required this.imageCount,
+    @required this.sellerEmail,
+    @required this.category,
+    @required this.location,
+    @required this.verified,
+  });
 }
