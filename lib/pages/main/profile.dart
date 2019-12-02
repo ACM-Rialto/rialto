@@ -194,6 +194,8 @@ class _ProfilePageState extends State<Profile> {
           image: documentSnapshot.data['image'],
           sellerEmail: documentSnapshot.data['seller'],
           category: documentSnapshot.data['category'],
+          location: documentSnapshot.data['location'],
+          verified: documentSnapshot.data['verified'],
         ));
       });
       state.setState(() {});

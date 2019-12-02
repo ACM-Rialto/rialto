@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -69,19 +70,23 @@ class ProductsViewState extends State<ProductsView> {
       ),
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ProductInformationPage(
-                        widget.user,
-                        product: _products[index],
-                      ),
-                ),
-              );
-            },
-            child: _SingleProductView(_products[index]));
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ProductInformationPage(
+                      widget.user,
+                      product: _products[index],
+                    ),
+              ),
+            );
+          },
+          child: _SingleProductView(
+            _products[index],
+            isVerified: _products[index].verified,
+          ),
+        );
       },
     );
   }
@@ -97,8 +102,9 @@ class ProductsViewState extends State<ProductsView> {
 
 class _SingleProductView extends StatelessWidget {
   final Product _product;
+  final bool isVerified;
 
-  _SingleProductView(this._product);
+  _SingleProductView(this._product, {@required this.isVerified});
 
   @override
   Widget build(BuildContext context) {
@@ -106,44 +112,74 @@ class _SingleProductView extends StatelessWidget {
       padding: const EdgeInsets.only(left: 0.0, top: 10.0, bottom: 8.0),
       child: Card(
         elevation: 6.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          verticalDirection: VerticalDirection.down,
+        child: Stack(
           children: <Widget>[
-            Expanded(
-              child: FittedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: new CachedNetworkImage(
-                    imageUrl: _product.image,
-                    placeholder: (context, url) =>
-                        CircularProgressIndicator(
-                            valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.redAccent)),
-                    errorWidget: (context, url, error) =>
-                        Image.asset("assets/images/logo.png"),
+            isVerified != null && isVerified
+                ? Padding(
+              padding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.check_circle,
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
+                  ),
+                  AutoSizeText(
+                    " Verified Location",
+                    style: TextStyle(
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            )
+                : Container(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              verticalDirection: VerticalDirection.down,
+              children: <Widget>[
+                Expanded(
+                  child: FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: new CachedNetworkImage(
+                        imageUrl: _product.image,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.redAccent)),
+                        errorWidget: (context, url, error) =>
+                            Image.asset("assets/images/logo.png"),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Center(
-              child: Text(
-                getTextWithCap(_product.name, 15),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
+                Center(
+                  child: Text(
+                    getTextWithCap(_product.name, 15),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Center(
-                child: Text(
-                  "${NumberFormat.simpleCurrency().format(_product.price)}",
-                  style: TextStyle(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Center(
+                    child: Text(
+                      "${NumberFormat.simpleCurrency().format(_product.price)}",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),
