@@ -4,14 +4,11 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rialto/data/rialto_user.dart';
+import 'package:rialto/utils/map.dart';
 
 class ItemUploadPage extends StatefulWidget {
   final RialtoUser user;
@@ -67,13 +64,14 @@ class ItemUploadPageState extends State<ItemUploadPage> {
     DocumentReference document =
     databaseReference.collection("items").document();
     String imageLocation;
-    for (var pictureIndex = 0; pictureIndex <
-        _imageFiles.length; pictureIndex++) {
+    for (var pictureIndex = 0;
+    pictureIndex < _imageFiles.length;
+    pictureIndex++) {
       StorageReference storageReference = FirebaseStorage.instance.ref().child(
           'images/${document.documentID}/${_imageFiles[pictureIndex]
               .toString()}-$pictureIndex}');
-      StorageUploadTask uploadTask = storageReference.putFile(
-          _imageFiles[pictureIndex]);
+      StorageUploadTask uploadTask =
+      storageReference.putFile(_imageFiles[pictureIndex]);
       await uploadTask.onComplete;
       if (imageLocation == null) {
         imageLocation = await storageReference.getDownloadURL();
@@ -81,8 +79,8 @@ class ItemUploadPageState extends State<ItemUploadPage> {
       pictureIndex++;
     }
     LatLng currentLagLng = _mapKey.currentState.currentLatLng;
-    GeoPoint geoPoint = new GeoPoint(
-        currentLagLng.latitude, currentLagLng.longitude);
+    GeoPoint geoPoint =
+    new GeoPoint(currentLagLng.latitude, currentLagLng.longitude);
     await document.setData({
       'name': _itemName,
       'description': _itemDescription,
@@ -254,6 +252,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                           .of(context)
                           .size
                           .width,
+                      zoom: 14.0,
                     ),
                   ],
                 ),
@@ -398,8 +397,8 @@ class ItemUploadPageState extends State<ItemUploadPage> {
 }
 
 class _ConfirmationDialogue extends StatelessWidget {
-  var uploadItem;
-  var firestore;
+  final uploadItem;
+  final firestore;
 
   _ConfirmationDialogue(this.firestore, this.uploadItem);
 
@@ -441,163 +440,5 @@ class _ConfirmationDialogue extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-class MapWithCenterPin extends StatefulWidget {
-  final double width;
-  final double height;
-
-  MapWithCenterPin({Key key, @required this.width, @required this.height})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return MapWithCenterPinState();
-  }
-}
-
-class MapWithCenterPinState extends State<MapWithCenterPin> {
-  final Completer<GoogleMapController> _controller = Completer();
-  LatLng currentLatLng = const LatLng(45.521563, -122.677433);
-  bool verified = false;
-  GoogleMapsPlaces _place =
-  GoogleMapsPlaces(apiKey: "AIzaSyDGfds7oyWUu5yqfG8Ce-8Dv6SF528x_Jg");
-
-  @override
-  void initState() {
-    super.initState();
-    Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((position) {
-      _controller.future.then((controller) {
-        controller.moveCamera(CameraUpdate.newLatLng(
-          new LatLng(position.latitude, position.longitude),
-        ));
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: widget.width,
-          height: widget.height,
-          child: _buildMap(),
-        ),
-        _buildCenterPin(),
-        _buildVerifiedCheck(),
-        Container(
-          width: widget.width,
-          height: widget.height,
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                child: Icon(
-                  Icons.not_listed_location,
-                  color: Theme
-                      .of(context)
-                      .accentColor,
-                ),
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColor,
-                onPressed: () {
-                  updateVerificationStatus();
-                },
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Future _onMapCreated(GoogleMapController controller) async {
-    _controller.complete(controller);
-  }
-
-  Widget _buildMap() {
-    return GoogleMap(
-      onMapCreated: _onMapCreated,
-      initialCameraPosition: CameraPosition(
-        target: currentLatLng,
-        zoom: 14.0,
-      ),
-      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-        new Factory<OneSequenceGestureRecognizer>(
-              () => new EagerGestureRecognizer(),
-        ),
-      ].toSet(),
-      onCameraMove: (position) {
-        currentLatLng = position.target;
-      },
-    );
-  }
-
-  Widget _buildCenterPin() {
-    const double iconSize = 40.0;
-    return Positioned(
-      top: (widget.height - iconSize) / 2,
-      right: (widget.width - iconSize) / 2,
-      child: new Icon(
-        Icons.person_pin_circle,
-        size: iconSize,
-        color: Theme
-            .of(context)
-            .primaryColor,
-      ),
-    );
-  }
-
-  Widget _buildVerifiedCheck() {
-    if (verified) {
-      return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: FittedBox(
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.check_circle,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                ),
-                Text(
-                  "Verified",
-                  style: TextStyle(
-                    color: Theme
-                        .of(context)
-                        .primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  Future updateVerificationStatus() async {
-    final location = Location(currentLatLng.latitude, currentLatLng.longitude);
-    final result =
-    await _place.searchNearbyWithRadius(location, 250, type: 'university');
-    if (result.results.isNotEmpty) {
-      verified = true;
-    } else {
-      verified = false;
-    }
-    setState(() {});
   }
 }

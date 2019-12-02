@@ -5,11 +5,13 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
+import 'package:rialto/utils/map.dart';
 
 class ProductInformationPage extends StatelessWidget {
   final Product product;
@@ -156,13 +158,37 @@ class ProductInformationPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              '${product.description}',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '${product.description}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
+            product.location != null
+                ? MapWithCenterPin(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.3,
+              zoom: 18,
+              scrollable: false,
+              startingLocation: LatLng(
+                product.location.latitude,
+                product.location.longitude,
+              ),
+              showVerificationButton: false,
+            )
+                : Container(),
           ],
         ),
       ),
