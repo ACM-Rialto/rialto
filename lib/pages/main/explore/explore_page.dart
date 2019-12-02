@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rialto/data/product.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/explore/horizontal_list.dart';
@@ -34,7 +35,12 @@ class _ExplorePageState extends State<ExplorePage>
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          await PermissionHandler().requestPermissions([
+            PermissionGroup.location,
+            PermissionGroup.locationAlways,
+            PermissionGroup.locationWhenInUse
+          ]);
           Navigator.push(
             context,
             MaterialPageRoute(
