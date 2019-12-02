@@ -26,7 +26,7 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
       ExplorePage(widget.rialtoUser),
       CartPage(widget.rialtoUser),
       Profile(widget.rialtoUser),
-      ReviewPage(widget.rialtoUser),
+      // ReviewPage(widget.rialtoUser),
     ];
   }
 

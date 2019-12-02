@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class GeneratedCodeView extends StatefulWidget {
   final Map<String, String> data;
@@ -31,15 +32,30 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
         .document(widget.data['seller'])
         .snapshots()
         .listen((event) {
-      // Navigator.pop(context);
-      // todo show review page for seller, do a pop (as shown above), then pushReplacement
-      // seller: widget.data['seller']
-      // buyer: widget.data['buyer']
+          showInSnackBar(widget.data['seller']);
+          Navigator.pop(context);
+          Navigator.of(context).pushReplacement(
+            new MaterialPageRoute(
+              builder: (context) {
+                // return ReviewPage(widget.data['seller']);
+              },
+            )
+          );
+          // todo show review page for seller, do a pop (as shown above), then pushReplacement
+          // seller: widget.data['seller']
+          // buyer: widget.data['buyer']
     });
+  }
+
+  void showInSnackBar(String value) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text(value)
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    showInSnackBar("hello");
     return Container(
       width: 250,
       height: 250,

@@ -221,11 +221,11 @@ class _ReviewPageState extends State<ReviewPage> {
                       _buildSubmitButton("Submit", () async {
                         _formKey.currentState.save();
                         try {
-                          await reviewProvider.
-                          await reviewProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
+                          // await reviewProvider.
+                          // await reviewProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Done!"),
+                              content: Text("Done! Rating = " + this.rating.toString() + " | review = " + this.review),
                             ),
                           );
                           Navigator.of(context).pushReplacementNamed('/home');
