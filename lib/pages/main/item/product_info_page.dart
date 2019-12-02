@@ -12,6 +12,7 @@ import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class ProductInformationPage extends StatelessWidget {
   final Product product;
@@ -211,6 +212,11 @@ class ProductInformationPage extends StatelessWidget {
       query.documents[0].reference.updateData({
         'transactions': transactions + 1,
       });
+      Navigator.push(context,
+        new MaterialPageRoute(
+          builder: (context) => ReviewPage(true, result['buyer'], this.user),
+        )
+      );
       // todo show review page for buyer, do a push not pushReplacement
       // seller: product.sellerEmail
       // buyer: user.firebaseUser.email

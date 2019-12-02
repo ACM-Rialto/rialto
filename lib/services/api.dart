@@ -16,6 +16,11 @@ class Api{
     return ref.snapshots() ;
   }
   Future<DocumentSnapshot> getDocumentById(String id) {
+    // print("path: " + path);
+    // print("getting document by ID " + id.toString());
+    // ref.document(id).get().then((onValue) {
+    //   print(onValue.data.toString());
+    // });
     return ref.document(id).get();
   }
   Future<void> removeDocument(String id){
@@ -25,7 +30,11 @@ class Api{
     return ref.add(data);
   }
   Future<void> updateDocument(Map data , String id) {
+    print("updating document");
     return ref.document(id).updateData(data) ;
+  }
+  Future<void> updateArray(dynamic data, String id, String key) {
+    return ref.document(id).updateData({key : FieldValue.arrayUnion([data.toJson()])});
   }
 
 

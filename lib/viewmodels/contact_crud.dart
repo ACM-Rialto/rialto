@@ -7,7 +7,7 @@ import '../locator.dart';
 import '../services/api.dart';
 
 class ContactCRUD extends ChangeNotifier {
-  Api _api = locator<Api>();
+  Api _api = contactBuyerToSellerLocator<Api>();
 
   // List<Contact> contacts;
 

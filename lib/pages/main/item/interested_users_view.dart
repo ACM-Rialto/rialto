@@ -110,7 +110,7 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
   Widget _createQRDialog(List emails, int index) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      content: new GeneratedCodeView(
+      content: new GeneratedCodeView(widget.sellerUser,
         seller: widget.sellerUser.firebaseUser.email,
         buyer: emails[index],
         itemId: widget.productDocument.documentID,

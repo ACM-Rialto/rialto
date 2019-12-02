@@ -334,6 +334,7 @@ class _signupPageState extends State<signupPage> {
       'last_name': _lastName,
       'email': _email,
       'reputation': 0,
+      // 'reviews': []
     });
   }
 }

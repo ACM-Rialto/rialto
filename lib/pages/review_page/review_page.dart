@@ -2,40 +2,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rialto/data/rialto_user.dart';
+import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
+import 'package:rialto/pages/review_page/review_model.dart';
 import 'package:rialto/viewmodels/review_crud.dart';
 
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class ReviewPage extends StatefulWidget implements NavigationPage {
+class ReviewPage extends StatefulWidget {
 
   // Contact contact;
 
   // ContactPage({@required this.contact});
 
-  // final RialtoUser user;
-  // ReviewPage(this.user, {Key key}) : super(key: key);
-
+  final RialtoUser user;
   final bool isBuyer;
-  final String email;
+  final Map<String, String> transactionData;
 
-  ReviewPage(this.isBuyer, this.email, {Key key}) : super(key: key);
+  ReviewPage(this.isBuyer, this.transactionData, this.user, {Key key}) : super(key: key);
 
   @override
-  _ReviewPageState createState() => _ReviewPageState(isBuyer, email);
+  _ReviewPageState createState() => _ReviewPageState();
 
 }
 
 class _ReviewPageState extends State<ReviewPage> {
 
   final _formKey = GlobalKey<FormState>();
-
-  final bool isBuyer;
-  final String email;
+  // final bool isBuyer;
+  // final Map<String, String> transactionData;
   double rating = 0.0;
   String review;
 
-  _ReviewPageState(this.isBuyer, this.email);
+  _ReviewPageState();
+  // _ReviewPageState(this.isBuyer, this.transactionData);
 
   Widget _buildSubmitButton(String text, VoidCallback onPressed) {
     return Container(
@@ -172,7 +172,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
     // final ReviewPageArguments args = ModalRoute.of(context).settings.arguments;
     final reviewProvider = Provider.of<ReviewCRUD>(context);
-    final isBuyer = this.isBuyer;
+    final isBuyer = widget.isBuyer;
 
     return Scaffold(
       appBar: AppBar(
@@ -205,7 +205,8 @@ class _ReviewPageState extends State<ReviewPage> {
                       // ratingTextFormWidget,
                       // starRatingWidget,
                       Text(
-                        "Give this transaction a rating " + (this.isBuyer ? "Buyer" : "Seller"),
+                        "Give this transaction and user a rating ",
+                        // + (this.isBuyer ? "Buyer" : "Seller")
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,
@@ -231,14 +232,25 @@ class _ReviewPageState extends State<ReviewPage> {
                       _buildSubmitButton("Submit", () async {
                         _formKey.currentState.save();
                         try {
-                          // await reviewProvider.
+                          await reviewProvider.addReview(isBuyer, Review(itemId: widget.transactionData['item'], rating: rating, review: review, buyer: widget.transactionData['buyer'], seller: widget.transactionData['seller']));
                           // await reviewProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Done! Rating = " + this.rating.toString() + " | review = " + this.review),
-                            ),
-                          );
-                          Navigator.of(context).pushReplacementNamed('/home');
+                          // Scaffold.of(context).showSnackBar(
+                          //   SnackBar(
+                          //     content: Text("Done!"),
+                          //     // content: Text("Done! Rating = " + this.rating.toString() + " | review = " + this.review),
+                          //   ),
+                          // );
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
+                          // Navigator.of(context).push(
+                          //   new MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return NavigationPageViewer(widget.user);
+                          //     }
+                          //   )
+                          // );
                         } catch (e) {
                           Scaffold.of(context).showSnackBar(
                             SnackBar(

@@ -19,8 +19,8 @@ class RialtoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider (
       providers: [
-        ChangeNotifierProvider(builder: (_) => locator<ContactCRUD>()),
-        ChangeNotifierProvider(builder: (_) => locator<ReviewCRUD>()),
+        ChangeNotifierProvider(builder: (_) => contactBuyerToSellerLocator<ContactCRUD>()),
+        ChangeNotifierProvider(builder: (_) => reviewsLocator<ReviewCRUD>()),
       ],
       child: MaterialApp(
         title: 'Rialto',
