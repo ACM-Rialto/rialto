@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class RialtoUser {
   final FirebaseUser firebaseUser;
 
-  RialtoUser({@required this.firebaseUser});
+  RialtoUser({this.firebaseUser});
 
   Future<DocumentSnapshot> getDocument() async {
     var snapshot = await Firestore.instance

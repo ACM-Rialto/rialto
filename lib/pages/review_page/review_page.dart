@@ -13,11 +13,16 @@ class ReviewPage extends StatefulWidget implements NavigationPage {
 
   // ContactPage({@required this.contact});
 
-  final RialtoUser user;
-  ReviewPage(this.user, {Key key}) : super(key: key);
+  // final RialtoUser user;
+  // ReviewPage(this.user, {Key key}) : super(key: key);
+
+  final bool isBuyer;
+  final String email;
+
+  ReviewPage(this.isBuyer, this.email, {Key key}) : super(key: key);
 
   @override
-  _ReviewPageState createState() => _ReviewPageState();
+  _ReviewPageState createState() => _ReviewPageState(isBuyer, email);
 
 }
 
@@ -25,8 +30,12 @@ class _ReviewPageState extends State<ReviewPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final bool isBuyer;
+  final String email;
   double rating = 0.0;
   String review;
+
+  _ReviewPageState(this.isBuyer, this.email);
 
   Widget _buildSubmitButton(String text, VoidCallback onPressed) {
     return Container(
@@ -163,6 +172,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
     // final ReviewPageArguments args = ModalRoute.of(context).settings.arguments;
     final reviewProvider = Provider.of<ReviewCRUD>(context);
+    final isBuyer = this.isBuyer;
 
     return Scaffold(
       appBar: AppBar(
@@ -195,7 +205,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       // ratingTextFormWidget,
                       // starRatingWidget,
                       Text(
-                        "Give this transaction a rating",
+                        "Give this transaction a rating " + (this.isBuyer ? "Buyer" : "Seller"),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,

@@ -179,16 +179,18 @@ class ProductInformationPage extends StatelessWidget {
             );
           });
     } else {
-      namesForEmail[user.firebaseUser.email] = 'Arham Siddiqui';
-      snapshot.reference.updateData({
-        'names_for_email': namesForEmail,
-      });
       ScaffoldState scaffold = scaffoldKey.currentState;
-      scaffold.showSnackBar(
-        new SnackBar(
-          content: new Text("You have marked this item as interested!"),
-        ),
-      );
+      user.getDocument().then((onValue) {
+        namesForEmail[user.firebaseUser.email] = onValue.data['first_name'] + " " + onValue.data['last_name'];
+        snapshot.reference.updateData({
+          'names_for_email': namesForEmail ?? {},
+        });
+      });
+      // scaffold.showSnackBar(
+      //   new SnackBar(
+      //     content: new Text("You have marked this item as interested!"),
+      //   ),
+      // );
     }
   }
 
