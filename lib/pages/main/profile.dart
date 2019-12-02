@@ -66,99 +66,107 @@ class _ProfilePageState extends State<Profile> {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Hero(
-                      tag: 'assets/profile/blank.jpg',
-                      child: Container(
-                        height: 125.0,
-                        width: 125.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(62.5),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/profile/blank.jpg'),
+      body: RefreshIndicator(
+        child: ListView(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Hero(
+                        tag: 'assets/profile/blank.jpg',
+                        child: Container(
+                          height: 125.0,
+                          width: 125.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(62.5),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/profile/blank.jpg'),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  '$_name',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
+                      Column(
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    '$_name',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 3,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 2.0,
-                                    ),
-                                    Text(
-                                      "$_rating",
-                                      style: TextStyle(
-                                        color: Theme
-                                            .of(context)
-                                            .primaryColor,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 2.0,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "$_rating",
+                                        style: TextStyle(
+                                          color: Theme
+                                              .of(context)
+                                              .primaryColor,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 4.0),
+                              Text(
+                                'The University of Texas at Dallas',
+                                style: TextStyle(
+                                  color: Colors.grey,
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              'The University of Texas at Dallas',
-                              style: TextStyle(
-                                color: Colors.grey,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20.0),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '$_transactions products sold',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                '$_transactions products sold',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              buildPosts(),
-            ],
-          )
-        ],
+                buildPosts(),
+              ],
+            )
+          ],
+        ),
+        onRefresh: () async {
+          return setState(() {});
+        },
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
       ),
     );
   }

@@ -113,6 +113,7 @@ class InterestedUsersViewState extends State<InterestedUsersView> {
       content: new GeneratedCodeView(
         seller: widget.sellerUser.firebaseUser.email,
         buyer: emails[index],
+        itemId: widget.productDocument.documentID,
       ),
     );
   }

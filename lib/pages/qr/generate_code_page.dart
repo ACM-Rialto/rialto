@@ -14,6 +14,7 @@ class GeneratedCodeView extends StatefulWidget {
     data['buyer'] = buyer;
     data['seller'] = seller;
     data['item'] = itemId;
+    print(json.encode(data));
   }
 
   @override

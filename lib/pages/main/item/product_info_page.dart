@@ -16,7 +16,7 @@ import 'package:rialto/pages/main/item/interested_users_view.dart';
 class ProductInformationPage extends StatelessWidget {
   final Product product;
   final RialtoUser user;
-  final GlobalKey scaffoldKey = new GlobalKey();
+  final GlobalKey scaffoldKey = new GlobalKey<ScaffoldState>();
 
   ProductInformationPage(this.user, {this.product});
 
@@ -213,7 +213,8 @@ class ProductInformationPage extends StatelessWidget {
       // seller: product.sellerEmail
       // buyer: user.firebaseUser.email
     } else {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldState scaffold = scaffoldKey.currentState;
+      scaffold.showSnackBar(
         SnackBar(
           content: Text(
             "Invalid QR code!",
