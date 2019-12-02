@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
-<<<<<<< HEAD
-import 'package:rialto/pages/main/explore/filler_page.dart';
-import 'package:rialto/pages/review_page/review_page.dart';
-=======
 import 'package:rialto/pages/main/profile.dart';
->>>>>>> d4043eed8a11fe0cf2ed99eb989a9134b0d09c8c
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class NavigationPageViewer extends StatefulWidget {
   final RialtoUser rialtoUser;
@@ -68,21 +64,6 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
     );
   }
 
-<<<<<<< HEAD
-  Widget buildRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg'),
-        Image.asset('assets/images/desk.jpg'),
-      ],
-    );
-  }
-
-=======
->>>>>>> d4043eed8a11fe0cf2ed99eb989a9134b0d09c8c
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
