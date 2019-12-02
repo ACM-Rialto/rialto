@@ -33,29 +33,8 @@ class ProductInformationPage extends StatelessWidget {
             color: Theme
                 .of(context)
                 .accentColor,
-            onPressed: () async {
-              String qrResultRaw = await BarcodeScanner.scan();
-              Map result = json.decode(qrResultRaw);
-              print(qrResultRaw);
-              if (result['buyer'] == user.firebaseUser.email &&
-                  result['seller'] == product.sellerEmail &&
-                  result['item'] == product.documentId) {
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      "The buyer is the same as the QR code!",
-                    ),
-                  ),
-                );
-              } else {
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      "Invalid QR code!",
-                    ),
-                  ),
-                );
-              }
+            onPressed: () {
+              scanQr(context);
             },
           )
               : Container(),
@@ -215,6 +194,37 @@ class ProductInformationPage extends StatelessWidget {
       scaffold.showSnackBar(
         new SnackBar(
           content: new Text("You have marked this item as interested!"),
+        ),
+      );
+    }
+  }
+
+  Future scanQr(BuildContext context) async {
+    String qrResultRaw = await BarcodeScanner.scan();
+    Map result = json.decode(qrResultRaw);
+    print(qrResultRaw);
+    if (result['buyer'] == user.firebaseUser.email &&
+        result['seller'] == product.sellerEmail &&
+        result['item'] == product.documentId) {
+      QuerySnapshot query = await Firestore.instance
+          .collection('users')
+          .where('email', isEqualTo: product.sellerEmail)
+          .limit(1)
+          .snapshots()
+          .first;
+      int transactions = query.documents[0].data['transactions'];
+      query.documents[0].reference.updateData({
+        'transactions': transactions + 1,
+      });
+      // todo show review page for buyer, do a push not pushReplacement
+      // seller: product.sellerEmail
+      // buyer: user.firebaseUser.email
+    } else {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Invalid QR code!",
+          ),
         ),
       );
     }
