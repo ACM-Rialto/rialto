@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rialto/pages/review_page/review_model.dart';
+
 import '../locator.dart';
 import '../services/api.dart';
-// import '../models/productModel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewCRUD extends ChangeNotifier {
   Api _api = locator<Api>();
@@ -40,7 +40,7 @@ class ReviewCRUD extends ChangeNotifier {
     return ;
   }
 
-  Future addContact(Review data) async{
+  Future addReview(Review data) async{
     var result  = await _api.addDocument(data.toJson()) ;
     return ;
   }

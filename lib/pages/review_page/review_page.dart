@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
-import 'package:rialto/pages/review_page/reviewPageArguments.dart';
 import 'package:rialto/viewmodels/review_crud.dart';
+
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ReviewPage extends StatefulWidget implements NavigationPage {
 
@@ -24,7 +25,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  int rating;
+  double rating = 0.0;
   String review;
 
   Widget _buildSubmitButton(String text, VoidCallback onPressed) {
@@ -67,30 +68,46 @@ class _ReviewPageState extends State<ReviewPage> {
     };
   }
 
-  Widget get ratingTextFormWidget {
-    const double borderRadius = 20.0;
-    return Container (
-      width: MediaQuery.of(context).size.width * 0.7,
-      height: 60,
-      child: TextFormField (
-        maxLines: 1,
-        keyboardType: TextInputType.emailAddress,
-        autofocus: true,
-        decoration: new InputDecoration(
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(borderRadius),
-            )
-          ),
-          hintText: 'test',
-          filled: true,
-          fillColor: Theme.of(context).accentColor,
-        ),
-        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        // onSaved: (value) => review = value.trim()
-      )
+  Widget get starRatingWidget {
+    final int value = 3;
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(5, (index) {
+          return Icon(
+            index < value ? Icons.star : Icons.star_border,
+            // color: Theme.of(context).accentColor,
+            color: Colors.black,
+          );
+        }) ?? <Widget>[],
+      ),
     );
   }
+
+  // Widget get ratingTextFormWidget {
+  //   const double borderRadius = 20.0;
+  //   return Container (
+  //     width: MediaQuery.of(context).size.width * 0.7,
+  //     height: 60,
+  //     child: TextFormField (
+  //       maxLines: 1,
+  //       keyboardType: TextInputType.emailAddress,
+  //       autofocus: true,
+  //       decoration: new InputDecoration(
+  //         border: new OutlineInputBorder(
+  //           borderRadius: const BorderRadius.all(
+  //             const Radius.circular(borderRadius),
+  //           )
+  //         ),
+  //         hintText: 'test',
+  //         filled: true,
+  //         fillColor: Theme.of(context).accentColor,
+  //       ),
+  //       validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+  //       // onSaved: (value) => review = value.trim()
+  //     )
+  //   );
+  // }
 
   Widget get reviewTextFormWidget {
     const double borderRadius = 20.0;
@@ -111,7 +128,7 @@ class _ReviewPageState extends State<ReviewPage> {
               const Radius.circular(borderRadius),
             ),
           ),
-          hintText: 'What was your experience with this transaction?',
+          hintText: 'What are your thoughts on this transaction?',
           filled: true,
           fillColor: Theme.of(context).accentColor,
         ),
@@ -144,35 +161,22 @@ class _ReviewPageState extends State<ReviewPage> {
     // TODO: implement build
     // _isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
-    final ReviewPageArguments args = ModalRoute.of(context).settings.arguments;
-    final reivewProvider = Provider.of<ReviewCRUD>(context);
+    // final ReviewPageArguments args = ModalRoute.of(context).settings.arguments;
+    final reviewProvider = Provider.of<ReviewCRUD>(context);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: Text('Rialto'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.space_bar,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/qr');
-            },
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        title: Text(
+          'Rate Transaction',
+          style: TextStyle(
+            color: Theme
+                .of(context)
+                .accentColor,
           ),
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(Icons.shopping_basket, color: Colors.white),
-            onPressed: null,
-          ),
-        ],
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -188,14 +192,37 @@ class _ReviewPageState extends State<ReviewPage> {
                       .width * 0.7,
                   child: Column(
                     children: <Widget>[
-                      ratingTextFormWidget,
-                      Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.01)),
+                      // ratingTextFormWidget,
+                      // starRatingWidget,
+                      Text(
+                        "Give this transaction a rating",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.005)),
+                      SmoothStarRating(
+                        allowHalfRating: true,
+                        onRatingChanged: (v) {
+                          this.rating = v;
+                          setState(() {});
+                        },
+                        starCount: 5,
+                        rating: rating,
+                        size: 40.0,
+                        color: Colors.yellow,
+                        borderColor: Colors.grey,
+                        spacing: 0.0,
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.05)),
                       reviewTextFormWidget,
                       Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height * 0.02)),
                       _buildSubmitButton("Submit", () async {
                         _formKey.currentState.save();
                         try {
-                          // await contactProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
+                          await reviewProvider.
+                          await reviewProvider.addContact(Contact(name: _name, to: args.sellerEmail, from: _email, message: _message));
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Done!"),
