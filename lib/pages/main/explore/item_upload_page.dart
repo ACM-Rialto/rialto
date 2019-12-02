@@ -76,7 +76,6 @@ class ItemUploadPageState extends State<ItemUploadPage> {
       if (imageLocation == null) {
         imageLocation = await storageReference.getDownloadURL();
       }
-      pictureIndex++;
     }
     LatLng currentLagLng = _mapKey.currentState.currentLatLng;
     GeoPoint geoPoint =
