@@ -78,7 +78,8 @@ class LoginPageState extends State<LoginPage> {
       } catch (e) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
-            content: Text("Failed to login! (${e.code})"),
+            // content: Text("Failed to login! (${e.code})"),
+            content: Text("Login failed. Incorrect username or password."),
           ),
         );
       }

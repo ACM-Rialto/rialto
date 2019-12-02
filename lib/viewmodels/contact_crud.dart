@@ -6,8 +6,8 @@ import 'package:rialto/pages/contact/contact_model.dart';
 import '../locator.dart';
 import '../services/api.dart';
 
-class CRUDModel extends ChangeNotifier {
-  Api _api = locator<Api>();
+class ContactCRUD extends ChangeNotifier {
+  Api _api = contactBuyerToSellerLocator<Api>();
 
   // List<Contact> contacts;
 

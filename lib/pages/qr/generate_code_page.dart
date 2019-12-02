@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:rialto/data/rialto_user.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class GeneratedCodeView extends StatefulWidget {
   final Map<String, String> data;
+  final RialtoUser user;
 
-  GeneratedCodeView({@required String buyer,
+  GeneratedCodeView(this.user, {@required String buyer,
     @required String seller,
     @required String itemId})
       : data = new Map() {
@@ -19,11 +22,15 @@ class GeneratedCodeView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return GeneratedCodeViewState();
+    return GeneratedCodeViewState(this.user);
   }
 }
 
 class GeneratedCodeViewState extends State<GeneratedCodeView> {
+
+  final RialtoUser user;
+  GeneratedCodeViewState(this.user);
+
   @override
   void initState() {
     super.initState();
@@ -36,10 +43,15 @@ class GeneratedCodeViewState extends State<GeneratedCodeView> {
       event.documentChanges.forEach(
             (change) {
           if (change.type == DocumentChangeType.modified) {
-            // Navigator.pop(context);
-            // todo show review page for seller, do a pop (as shown above), then pushReplacement
-            // seller: widget.data['seller']
-            // buyer: widget.data['buyer']
+            Navigator.pop(context);
+            Navigator.of(context).pushReplacement(
+              new MaterialPageRoute(
+                builder: (context) {
+                  // return ReviewPage(false, widget.data['email']);
+                  return ReviewPage(false, widget.data, user);
+                }
+              )
+            );
           }
         },
       );

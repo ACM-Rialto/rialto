@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rialto/pages/contact/contact_page_arguments.dart';
+import 'package:rialto/viewmodels/contact_crud.dart';
 import 'package:rialto/pages/contact/contact_model.dart';
 import 'package:rialto/pages/contact/contact_page_arguments.dart';
-import 'package:rialto/viewmodels/CRUDModel.dart';
 
 class ContactPage extends StatefulWidget {
   Contact contact;
@@ -137,7 +138,7 @@ class _ContactPageState extends State<ContactPage> {
     // _isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
     final ContactPageArguments args = ModalRoute.of(context).settings.arguments;
-    final contactProvider = Provider.of<CRUDModel>(context);
+    final contactProvider = Provider.of<ContactCRUD>(context);
 
     return Scaffold(
         appBar: AppBar(

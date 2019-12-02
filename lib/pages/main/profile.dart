@@ -149,6 +149,9 @@ class _ProfilePageState extends State<Profile> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              RaisedButton (
+                                child: Text("See reviews"),
+                              )
                             ],
                           ),
                         ],

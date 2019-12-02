@@ -3,6 +3,7 @@ import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/main/cart/cart.dart';
 import 'package:rialto/pages/main/explore/explore_page.dart';
 import 'package:rialto/pages/main/profile.dart';
+import 'package:rialto/pages/review_page/review_page.dart';
 
 class NavigationPageViewer extends StatefulWidget {
   final RialtoUser rialtoUser;
@@ -25,6 +26,7 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
       ExplorePage(widget.rialtoUser),
       CartPage(widget.rialtoUser),
       Profile(widget.rialtoUser),
+      // ReviewPage(widget.rialtoUser),
     ];
   }
 
@@ -52,6 +54,10 @@ class _NavigationPageViewerState extends State<NavigationPageViewer> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.person),
             title: new Text('Profile'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.rate_review),
+            title: new Text('Review'),
           )
         ],
       ),

@@ -5,7 +5,8 @@ import 'package:rialto/pages/front/front_page.dart';
 import 'package:rialto/pages/front/login_page.dart';
 import 'package:rialto/pages/front/signup_authentication.dart';
 import 'package:rialto/pages/front/signup_page.dart';
-import 'package:rialto/viewmodels/CRUDModel.dart';
+import 'package:rialto/viewmodels/contact_crud.dart';
+import 'package:rialto/viewmodels/review_crud.dart';
 
 void main() {
   setupLocator();
@@ -18,7 +19,8 @@ class RialtoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider (
       providers: [
-        ChangeNotifierProvider(builder: (_) => locator<CRUDModel>()),
+        ChangeNotifierProvider(builder: (_) => contactBuyerToSellerLocator<ContactCRUD>()),
+        ChangeNotifierProvider(builder: (_) => reviewsLocator<ReviewCRUD>()),
       ],
       child: MaterialApp(
         title: 'Rialto',
