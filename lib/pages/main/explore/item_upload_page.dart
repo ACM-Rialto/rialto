@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/utils/map.dart';
+import 'package:rialto/utils/utilities.dart';
 
 class ItemUploadPage extends StatefulWidget {
   final RialtoUser user;
@@ -64,9 +65,12 @@ class ItemUploadPageState extends State<ItemUploadPage> {
     DocumentReference document =
     databaseReference.collection("items").document();
     String imageLocation;
-    for (var pictureIndex = 0; pictureIndex < _imageFiles.length; pictureIndex++) {
-      StorageReference storageReference = FirebaseStorage.instance.ref().child(
-          'images/${document.documentID}/$pictureIndex');
+    for (var pictureIndex = 0;
+    pictureIndex < _imageFiles.length;
+    pictureIndex++) {
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('images/${document.documentID}/$pictureIndex');
       StorageUploadTask uploadTask =
       storageReference.putFile(_imageFiles[pictureIndex]);
       await uploadTask.onComplete;
@@ -241,6 +245,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                     ),
                     MapWithCenterPin(
                       key: _mapKey,
+                      startingLocation: LatLng(32.987587, -96.749771),
                       height: MediaQuery
                           .of(context)
                           .size
@@ -249,7 +254,7 @@ class ItemUploadPageState extends State<ItemUploadPage> {
                           .of(context)
                           .size
                           .width,
-                      zoom: 14.0,
+                      zoom: 16.0,
                     ),
                   ],
                 ),
@@ -293,10 +298,22 @@ class ItemUploadPageState extends State<ItemUploadPage> {
   }
 
   Future _uploadItem(Firestore firestore) async {
+    showLoadingDialog(
+      context,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
+    );
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
     }
     await createRecord(firestore);
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 

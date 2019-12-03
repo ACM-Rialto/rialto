@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 
@@ -46,7 +45,7 @@ class MapWithCenterPinState extends State<MapWithCenterPin> {
         ? const LatLng(45.521563, -122.677433)
         : widget.startingLocation;
     if (widget.startingLocation == null) {
-      Geolocator()
+      /*Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
           .then((position) {
         _controller.future.then((controller) {
@@ -54,7 +53,7 @@ class MapWithCenterPinState extends State<MapWithCenterPin> {
             new LatLng(position.latitude, position.longitude),
           ));
         });
-      });
+      });*/
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/front/front_page.dart';
 import 'package:rialto/pages/main/navigation_page.dart';
+import 'package:rialto/utils/utilities.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 class LoginPage extends FrontPage {
@@ -53,7 +54,7 @@ class LoginPageState extends State<LoginPage> {
       var size = MediaQuery
           .of(context)
           .size;
-      widget.showLoadingDialog(context, width: size.width, height: size.height);
+      showLoadingDialog(context, width: size.width, height: size.height);
       _formKey.currentState.save();
       try {
         AuthResult auth =

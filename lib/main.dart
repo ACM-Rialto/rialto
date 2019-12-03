@@ -24,6 +24,7 @@ class RialtoApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Rialto',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.orange,
           primaryColor: Colors.redAccent,

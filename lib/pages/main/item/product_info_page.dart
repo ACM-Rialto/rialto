@@ -13,8 +13,8 @@ import 'package:rialto/data/rialto_user.dart';
 import 'package:rialto/pages/contact/contact_page.dart';
 import 'package:rialto/pages/contact/contact_page_arguments.dart';
 import 'package:rialto/pages/main/item/interested_users_view.dart';
-import 'package:rialto/utils/map.dart';
 import 'package:rialto/pages/review_page/review_page.dart';
+import 'package:rialto/utils/map.dart';
 
 class ProductInformationPage extends StatelessWidget {
   final Product product;
@@ -215,10 +215,20 @@ class ProductInformationPage extends StatelessWidget {
     }
   }
 
+  Map<String, String> to(Map map) {
+    Map<String, String> thing = new Map();
+    map.forEach((key, value) {
+      thing[key] = value;
+    });
+    return thing;
+  }
+
   Future scanQr(BuildContext context) async {
     String qrResultRaw = await BarcodeScanner.scan();
-    Map result = json.decode(qrResultRaw);
+    Map res = json.decode(qrResultRaw);
     print(qrResultRaw);
+    print(res);
+    Map<String, String> result = to(res);
     if (result['buyer'] == user.firebaseUser.email &&
         result['seller'] == product.sellerEmail &&
         result['item'] == product.documentId) {
@@ -234,7 +244,7 @@ class ProductInformationPage extends StatelessWidget {
       });
       Navigator.push(context,
         new MaterialPageRoute(
-          builder: (context) => ReviewPage(true, result['buyer'], this.user),
+          builder: (context) => ReviewPage(true, result, this.user),
         )
       );
       // todo show review page for buyer, do a push not pushReplacement

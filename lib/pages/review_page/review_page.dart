@@ -205,7 +205,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       // ratingTextFormWidget,
                       // starRatingWidget,
                       Text(
-                        "Give this transaction and user a rating ",
+                        "Give this transaction a rating",
                         // + (this.isBuyer ? "Buyer" : "Seller")
                         style: TextStyle(
                           color: Colors.black,
